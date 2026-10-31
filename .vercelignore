@@ -1,0 +1,7 @@
+# Large local database files
+Entire Apollo Database*
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
