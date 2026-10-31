@@ -102,6 +102,10 @@ class ApproveOutboxRequest(BaseModel):
     email_id: str
 
 # ----------------- Web UI -----------------
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
+
 @app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
 @app.get("/api/index.py", response_class=HTMLResponse)
@@ -122,13 +126,9 @@ async def home_page(request: Request):
 
 @app.exception_handler(404)
 async def custom_404_handler(request: Request, exc):
-    accept = request.headers.get("accept", "")
-    # Only redirect HTML requests if not already at a known root path (prevents infinite redirect loops on Vercel)
-    if "text/html" in accept and request.url.path not in ("/", "/index.html", "/api/index.py", "/api/index", "/app", "/home"):
-        return RedirectResponse(url="/")
     return JSONResponse(
         status_code=404,
-        content={"detail": f"Route '{request.url.path}' not found. Please navigate to '/' for the EximFlow AI dashboard."}
+        content={"detail": f"Route '{request.url.path}' not found. EximFlow AI dashboard is available at '/'."}
     )
 
 # ----------------- API Endpoints -----------------

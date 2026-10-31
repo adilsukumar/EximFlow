@@ -78,6 +78,7 @@ def auto_open_browser(url: str):
     t.start()
 
 from app.main import app
+handler = app
 import uvicorn
 
 if __name__ == "__main__":
