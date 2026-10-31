@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from fastapi import FastAPI, Request, Query, Body, HTTPException
-from fastapi.responses import HTMLResponse, PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -11,10 +11,14 @@ from app.config import APP_NAME, APP_DESCRIPTION, HAS_APOLLO_ZIP, APOLLO_ZIP_FIL
 from app.data_engines.apollo_streamer import ApolloStreamEngine
 from app.data_engines.customs_engine import CustomsTradeEngine
 from app.data_engines.startup_icp_engine import StartupICPEngine
+from app.data_engines.social_parser import SocialParserEngine
 from app.services.verifier import WaterfallEmailVerifier
 from app.services.ai_generator import AIEmailGenerator
 from app.services.deliverability import DeliverabilityService
 from app.services.crm import CRMService
+from app.services.templates_vault import HumanizedTemplatesVault
+from app.services.harvey_agent import HarveyAutonomousSDRAgent
+from app.services.pdf_generator import PDFProposalGenerator
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,11 +36,16 @@ templates = Jinja2Templates(directory=str(BASE_DIR / "app" / "templates"))
 apollo_engine = ApolloStreamEngine()
 customs_engine = CustomsTradeEngine()
 startup_engine = StartupICPEngine()
+social_engine = SocialParserEngine()
 crm_service = CRMService()
+harvey_agent = HarveyAutonomousSDRAgent()
 
 # ----------------- Models -----------------
 class VerifyRequest(BaseModel):
     email: str
+
+class BatchVerifyRequest(BaseModel):
+    emails: List[str]
 
 class GenerateSequenceRequest(BaseModel):
     prospect_name: str
@@ -45,7 +54,7 @@ class GenerateSequenceRequest(BaseModel):
     prospect_country: Optional[str] = "United States"
     product_category: Optional[str] = "Spices & Agro"
     client_company: Optional[str] = "Surat Organic Agro Exports"
-    client_name: Optional[str] = "Rajesh Patel"
+    client_name: Optional[str] = "Aarav Sharma"
     client_title: Optional[str] = "Head of International Trade"
     certifications: Optional[str] = "BRC, FDA, USDA Organic"
 
@@ -62,11 +71,41 @@ class UpdateStageRequest(BaseModel):
     lead_id: str
     stage: str
 
+class DeleteLeadRequest(BaseModel):
+    lead_id: str
+
 class TriageReplyRequest(BaseModel):
     reply_text: str
 
+class GenerateProposalRequest(BaseModel):
+    exporter_name: str
+    exporter_company: str
+    product: str
+    target_country: Optional[str] = "United States"
+    tier: Optional[str] = "growth"
+
+class ParseTargetRequest(BaseModel):
+    target: str
+    niche: Optional[str] = "Spices & Agro"
+
+class ImportCSVRequest(BaseModel):
+    csv_text: str
+
+class ConfigureHarveyRequest(BaseModel):
+    business_name: str
+    business_offering: str
+    icp_description: str
+    target_geography: Optional[str] = "United States, Netherlands, UAE"
+    mode: Optional[str] = "review_first"
+
+class ApproveOutboxRequest(BaseModel):
+    email_id: str
+
 # ----------------- Web UI -----------------
 @app.get("/", response_class=HTMLResponse)
+@app.get("/index.html", response_class=HTMLResponse)
+@app.get("/app", response_class=HTMLResponse)
+@app.get("/home", response_class=HTMLResponse)
 async def home_page(request: Request):
     apollo_stats = apollo_engine.get_stats()
     return templates.TemplateResponse(
@@ -79,6 +118,16 @@ async def home_page(request: Request):
         }
     )
 
+@app.exception_handler(404)
+async def custom_404_handler(request: Request, exc):
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        return RedirectResponse(url="/")
+    return JSONResponse(
+        status_code=404,
+        content={"detail": f"Route '{request.url.path}' not found. Please navigate to '/' for the EximFlow AI dashboard."}
+    )
+
 # ----------------- API Endpoints -----------------
 @app.get("/api/status")
 async def system_status():
@@ -89,47 +138,65 @@ async def system_status():
         "apollo_stats": apollo_engine.get_stats(),
         "customs_database_records": len(customs_engine._customs_records),
         "startup_icp_records": len(startup_engine._tech_records),
-        "active_pipeline_leads": len(crm_service.get_all_leads())
+        "social_parser_records": len(social_engine._parsed_profiles),
+        "active_pipeline_leads": len(crm_service.get_all_leads()),
+        "harvey_status": harvey_agent.get_status_report()
     }
 
 @app.get("/api/search")
 async def search_leads(
-    database: str = Query("all", description="Source: all, customs, apollo, startups"),
+    database: str = Query("all", description="Source: all, customs, social, apollo, startups"),
     query: str = Query("", description="Keyword search"),
     product: str = Query("", description="Product or category (e.g. Spices, Rice, Flanges)"),
     country: str = Query("", description="Country e.g. United States, Germany"),
-    limit: int = Query(25, ge=1, le=100)
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0)
 ):
     results = []
     
-    # 1. Customs Data (Best for Indian Exporters)
-    if database in ["all", "customs"]:
+    # 1. Customs Data (Best for Physical Goods Exporters)
+    if database == "customs" or (database == "all" and offset == 0):
         customs_leads = customs_engine.search_customs(query=query, product=product, country=country, limit=limit)
         results.extend(customs_leads)
 
-    # 2. Apollo Streaming Engine (Zero disk extraction)
-    remaining = limit - len(results)
+    # 2. Instagram & Social Media Parser (Inspired by parser.im)
+    if database == "social" or (database == "all" and offset == 0):
+        social_leads = social_engine.search_social_leads(
+            query=query or product,
+            category=product,
+            country=country,
+            limit=limit if database == "social" else 15
+        )
+        results.extend(social_leads)
+
+    # 3. Startup ICP Engine
+    if database == "startups" or (database == "all" and offset == 0):
+        startup_leads = startup_engine.search_startups(
+            query=query,
+            industry=product,
+            country=country,
+            limit=limit if database == "startups" else 15
+        )
+        results.extend(startup_leads)
+
+    # 4. Apollo Streaming Engine (Zero disk extraction across 99,311,285 records)
+    remaining = limit - len(results) if offset == 0 else limit
     if database == "apollo" or (database == "all" and remaining > 0 and HAS_APOLLO_ZIP):
         apollo_leads = apollo_engine.search_leads(
             query=query or product,
             country=country,
-            limit=limit if database == "apollo" else min(remaining, 10)
+            limit=limit if database == "apollo" else max(remaining, 25),
+            offset=offset
         )
         results.extend(apollo_leads)
 
-    # 3. Startup ICP Engine
-    remaining = limit - len(results)
-    if database == "startups" or (database == "all" and remaining > 0):
-        startup_leads = startup_engine.search_startups(
-            query=query,
-            industry=product,
-            limit=limit if database == "startups" else min(remaining, 10)
-        )
-        results.extend(startup_leads)
-
     return {
         "total": len(results),
+        "limit": limit,
+        "offset": offset,
         "database_selected": database,
+        "estimated_total_database_records": 99311285 if HAS_APOLLO_ZIP else 250000,
+        "has_more": True if HAS_APOLLO_ZIP else len(results) >= limit,
         "leads": results[:limit]
     }
 
@@ -137,6 +204,19 @@ async def search_leads(
 async def verify_email(req: VerifyRequest):
     result = WaterfallEmailVerifier.verify(req.email)
     return result
+
+@app.post("/api/verify/batch")
+async def verify_emails_batch(req: BatchVerifyRequest):
+    results = []
+    for email in req.emails[:50]:
+        results.append(WaterfallEmailVerifier.verify(email))
+    return {
+        "total": len(results),
+        "results": results,
+        "safe_count": sum(1 for r in results if r["status"] == "SAFE_TO_SEND"),
+        "risky_count": sum(1 for r in results if r["status"] == "ACCEPTABLE_RISKY"),
+        "do_not_send_count": sum(1 for r in results if r["status"] == "DO_NOT_SEND")
+    }
 
 @app.post("/api/generate-sequence")
 async def generate_cold_sequence(req: GenerateSequenceRequest):
@@ -147,7 +227,7 @@ async def generate_cold_sequence(req: GenerateSequenceRequest):
         prospect_country=req.prospect_country or "United States",
         product_category=req.product_category or "Spices & Agro",
         client_company=req.client_company or "Surat Organic Agro Exports",
-        client_name=req.client_name or "Rajesh Patel",
+        client_name=req.client_name or "Aarav Sharma",
         client_title=req.client_title or "Head of International Trade",
         certifications=req.certifications or "BRC, FDA, USDA Organic"
     )
@@ -189,6 +269,18 @@ async def update_crm_stage(req: UpdateStageRequest):
         raise HTTPException(status_code=404, detail="Lead not found")
     return {"status": "success"}
 
+@app.post("/api/crm/delete-lead")
+async def delete_crm_lead(req: DeleteLeadRequest):
+    success = crm_service.delete_lead(req.lead_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    return {"status": "success", "lead_id": req.lead_id}
+
+@app.post("/api/crm/batch-verify")
+async def batch_verify_crm_leads():
+    summary = crm_service.batch_verify_leads(WaterfallEmailVerifier)
+    return {"status": "success", "summary": summary}
+
 @app.post("/api/crm/triage-reply")
 async def triage_incoming_reply(req: TriageReplyRequest):
     result = crm_service.classify_email_reply(req.reply_text)
@@ -202,6 +294,127 @@ async def export_crm_csv():
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=eximflow_smartlead_leads.csv"}
     )
+
+@app.get("/api/templates/vault")
+async def get_templates_vault():
+    return {"templates": HumanizedTemplatesVault.get_all_templates()}
+
+@app.post("/api/proposal/generate")
+async def generate_client_proposal_endpoint(req: GenerateProposalRequest):
+    proposal = HumanizedTemplatesVault.generate_client_proposal(
+        exporter_name=req.exporter_name,
+        exporter_company=req.exporter_company,
+        product=req.product,
+        target_country=req.target_country or "United States",
+        tier=req.tier or "growth"
+    )
+    return proposal
+
+@app.get("/api/proposal/download-pdf")
+async def download_proposal_pdf_endpoint(
+    exporter_name: str = Query("Aarav Sharma"),
+    exporter_company: str = Query("Surat Agro Exports Ltd"),
+    product: str = Query("Organic Turmeric & Spices"),
+    target_country: str = Query("United States & Germany"),
+    tier: str = Query("growth")
+):
+    filename, pdf_bytes = PDFProposalGenerator.create_proposal_pdf(
+        exporter_name=exporter_name,
+        exporter_company=exporter_company,
+        product=product,
+        target_country=target_country,
+        tier=tier
+    )
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
+
+@app.get("/api/proposal/view-pdf")
+async def view_proposal_pdf_endpoint(
+    exporter_name: str = Query("Aarav Sharma"),
+    exporter_company: str = Query("Surat Agro Exports Ltd"),
+    product: str = Query("Organic Turmeric & Spices"),
+    target_country: str = Query("United States & Germany"),
+    tier: str = Query("growth")
+):
+    filename, pdf_bytes = PDFProposalGenerator.create_proposal_pdf(
+        exporter_name=exporter_name,
+        exporter_company=exporter_company,
+        product=product,
+        target_country=target_country,
+        tier=tier
+    )
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'inline; filename="{filename}"'
+        }
+    )
+
+# ----------------- Social Media Parser Endpoints (parser.im) -----------------
+@app.get("/api/parser/social-search")
+async def search_social_parser(
+    query: str = Query("", description="Hashtag or handle or keyword"),
+    category: str = Query(""),
+    country: str = Query(""),
+    limit: int = Query(20, ge=1, le=50)
+):
+    results = social_engine.search_social_leads(query=query, category=category, country=country, limit=limit)
+    return {"total": len(results), "profiles": results}
+
+@app.post("/api/parser/reel-parse")
+async def parse_reel_or_target(req: ParseTargetRequest):
+    leads = social_engine.parse_reel_or_profile_target(req.target, req.niche)
+    return {
+        "status": "success",
+        "target": req.target,
+        "niche": req.niche,
+        "extracted_profiles": len(leads),
+        "leads": leads
+    }
+
+@app.post("/api/parser/import-csv")
+async def import_parser_csv(req: ImportCSVRequest):
+    result = social_engine.import_parser_im_csv(req.csv_text)
+    return result
+
+# ----------------- Harvey: Autonomous AI Sales Agent -----------------
+@app.get("/api/harvey/status")
+async def get_harvey_status():
+    return harvey_agent.get_status_report()
+
+@app.post("/api/harvey/configure")
+async def configure_harvey(req: ConfigureHarveyRequest):
+    return harvey_agent.configure_profile(
+        business_name=req.business_name,
+        business_offering=req.business_offering,
+        icp_description=req.icp_description,
+        target_geography=req.target_geography or "United States, Europe",
+        mode=req.mode or "review_first"
+    )
+
+@app.post("/api/harvey/run-cycle")
+async def run_harvey_autonomous_cycle():
+    result = harvey_agent.run_autonomous_cycle(
+        customs_engine=customs_engine,
+        apollo_engine=apollo_engine,
+        social_engine=social_engine,
+        verifier_engine=WaterfallEmailVerifier,
+        crm_engine=crm_service
+    )
+    return result
+
+@app.post("/api/harvey/approve-outbox")
+async def approve_harvey_outbox(req: ApproveOutboxRequest):
+    success = harvey_agent.approve_outbox_email(req.email_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Email not found in Harvey Outbox")
+    return {"status": "success", "email_id": req.email_id}
 
 @app.get("/api/playbook")
 async def get_playbook_markdown():

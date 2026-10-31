@@ -37,44 +37,67 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-bold text-lg text-white tracking-tight">EximFlow <span class="text-blue-400">AI</span></h1>
-            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">v1.0 Pro</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">v2.1 Pro</span>
           </div>
-          <p class="text-[11px] text-gray-400 hidden sm:block">Autonomous Outbound Engine for B2B Exporters & High-Growth Startups</p>
+          <p class="text-[11px] text-gray-400 hidden sm:block">Autonomous Outbound Engine • Customs Trade AMS • Instagram Parser • Harvey AI SDR</p>
         </div>
       </div>
 
-      <!-- Engine Status Indicator -->
-      <div id="apollo-zip-badge" class="flex items-center gap-2">
-        {% if has_apollo_zip %}
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          Apollo 99M Stream: Ready (Zero Disk Extraction)
-        </span>
-        {% else %}
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
-          Customs Trade & Startup ICP Engines Active
-        </span>
-        {% endif %}
+      <!-- Header Actions & Engine Status Indicator -->
+      <div class="flex items-center gap-3">
+        <button onclick="openUserManualModal()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white shadow-lg shadow-blue-500/20 border border-blue-400/30 transition hover:scale-[1.02] cursor-pointer">
+          <svg class="w-4 h-4 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          <span>📖 User Manual & Tour</span>
+        </button>
+
+        <div id="apollo-zip-badge" class="flex items-center gap-2">
+          {% if has_apollo_zip %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            Apollo 99M Stream: Ready (Zero Disk Extraction)
+          </span>
+          {% else %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
+            Customs Trade, Social Parser & Harvey Active
+          </span>
+          {% endif %}
+        </div>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="max-w-7xl mx-auto mt-3 flex items-center gap-1 overflow-x-auto no-scrollbar border-t border-gray-800/50 pt-2 text-xs font-medium text-gray-400">
-      <button data-tab="discovery" class="nav-tab-btn tab-active px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+      <button data-tab="discovery" class="nav-tab-btn tab-active px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        Lead Discovery Engine
+        Lead Discovery
       </button>
-      <button data-tab="pipeline" class="nav-tab-btn px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+      <button data-tab="social" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+        <svg class="w-4 h-4 text-pink-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <span class="text-white font-semibold">Social Parser (parser.im)</span>
+      </button>
+      <button data-tab="harvey" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span class="text-cyan-300 font-semibold">Harvey: Autonomous SDR</span>
+      </button>
+      <button data-tab="pipeline" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-        Sales Pipeline & Discovery Calls
+        Sales Pipeline & CRM
       </button>
-      <button data-tab="deliverability" class="nav-tab-btn px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+      <button data-tab="templates" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        <span class="text-white font-semibold">Humanized Email Vault</span>
+      </button>
+      <button data-tab="execution" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+        <span class="text-white font-semibold">Proposals & Batch Verify</span>
+      </button>
+      <button data-tab="deliverability" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-        Deliverability & DNS Hub
+        Deliverability Hub
       </button>
-      <button data-tab="playbook" class="nav-tab-btn px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-        Master Startup Playbook
+      <button data-tab="playbook" class="nav-tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition hover:text-gray-200">
+        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <span class="text-white font-semibold">Master Playbook</span>
       </button>
     </div>
   </header>
@@ -83,29 +106,81 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
 
     <!-- ============================================== -->
+    <!-- SLEEK MINIMAL TOP BAR                          -->
+    <!-- ============================================== -->
+    <div id="user-manual-banner" class="glass-panel rounded-xl px-4 py-2.5 border border-blue-500/20 bg-gray-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-bold text-white tracking-tight">EximFlow Pro Engine</span>
+        <span class="text-gray-500 hidden sm:inline">•</span>
+        <span class="text-gray-400 text-[11px] hidden sm:inline">99.3M Apollo Zero-Disk Stream & US Customs AMS Active</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openUserManualModal()" class="px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          User Manual
+        </button>
+        <button onclick="startInteractiveTour()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-500/20 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Guided Tour
+        </button>
+        <button onclick="minimizeManualBanner()" title="Dismiss Bar" class="p-1 text-gray-500 hover:text-gray-300 rounded transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
     <!-- TAB 1: LEAD DISCOVERY ENGINE                  -->
     <!-- ============================================== -->
     <section id="tab-discovery" class="tab-section space-y-6">
-      <!-- Search & Filters Control Bar -->
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-blue-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: Searching 99.3M Apollo Records & US Customs Bill of Lading Manifests</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. Apollo Zero-Disk Streaming:</strong> When querying Apollo, EximFlow seeks directly inside the 19.6 GB ZIP archive's 52 internal CSV files without extracting them to disk. It streams clean contact records with email, job title, company size, and LinkedIn.
+          </p>
+          <p>
+            <strong>2. US Customs Bill of Lading:</strong> Real import manifests containing foreign suppliers, US ports (New York, Long Beach, Houston), TEU container counts, and arrival dates for Basmati Rice, Spices, Flanges, Dehydrated Vegetables, APIs, and Seafood.
+          </p>
+          <p>
+            <strong>3. Batch Streaming & Pagination:</strong> Pick a batch size (30, 60, 100, 250, 500) and click <em>"Stream Next Batch from 99M Database"</em> at the bottom to page through the entire 99M dataset without freezing your browser.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="document.getElementById('search-product').value='Spices'; resetAndSearchLeads()" class="px-2 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-[10px] font-semibold hover:bg-blue-500/30">🌶️ Search US Spices Importers</button>
+            <button onclick="document.getElementById('search-product').value='Rice'; resetAndSearchLeads()" class="px-2 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-[10px] font-semibold hover:bg-blue-500/30">🌾 Search Basmati Rice Importers</button>
+            <button onclick="document.getElementById('search-product').value='Flanges'; resetAndSearchLeads()" class="px-2 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-[10px] font-semibold hover:bg-blue-500/30">⚙️ Search Flanges Importers</button>
+            <button onclick="openUserManualModal('apollo')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read 99M Streaming Architecture Manual →</button>
+          </div>
+        </div>
+      </details>
       <div class="glass-panel rounded-2xl p-6 border border-gray-800">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
           <div>
             <h2 class="text-xl font-bold text-white tracking-tight">Multi-Source Prospect Discovery</h2>
-            <p class="text-xs text-gray-400 mt-0.5">Sourcing verified buyers across US Customs Trade Records, Apollo 99M Streams, and Startup ICPs.</p>
+            <p class="text-xs text-gray-400 mt-0.5">Sourcing verified buyers across US Customs Trade Records, Apollo 99M Streams, Instagram Parser, and Startup ICPs.</p>
           </div>
           <div id="leads-count" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/30">
             Scanning Datasets...
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <!-- Database Selector -->
           <div>
             <label class="block text-xs font-medium text-gray-400 mb-1">Database Source</label>
-            <select id="search-database" onchange="searchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
-              <option value="all">⚡ All Sources (Customs + Apollo + Startups)</option>
+            <select id="search-database" onchange="resetAndSearchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+              <option value="all">⚡ All Sources (Customs + Apollo + Startups + Instagram)</option>
               <option value="customs">🚢 US/EU Customs Bill of Lading (Exporters)</option>
               <option value="apollo">📁 Apollo Database (99M Zero-Disk Stream)</option>
+              <option value="social">📸 Instagram / parser.im (Wholesalers & Buyers)</option>
               <option value="startups">🚀 Tech Startups & SaaS Decision Makers</option>
             </select>
           </div>
@@ -113,21 +188,33 @@
           <!-- Product / Industry Category -->
           <div>
             <label class="block text-xs font-medium text-gray-400 mb-1">Product / Commodity</label>
-            <input type="text" id="search-product" placeholder="e.g. Spices, Rice, Flanges, Textiles" onkeydown="if(event.key==='Enter') searchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+            <input type="text" id="search-product" placeholder="e.g. Spices, Rice, Flanges, Textiles" onkeydown="if(event.key==='Enter') resetAndSearchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
           </div>
 
           <!-- Target Country -->
           <div>
             <label class="block text-xs font-medium text-gray-400 mb-1">Destination Country</label>
-            <input type="text" id="search-country" placeholder="e.g. United States, Germany, UAE" onkeydown="if(event.key==='Enter') searchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+            <input type="text" id="search-country" placeholder="e.g. United States, Germany, UAE" onkeydown="if(event.key==='Enter') resetAndSearchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+          </div>
+
+          <!-- Result Batch Size Selector -->
+          <div>
+            <label class="block text-xs font-medium text-gray-400 mb-1">Batch Stream Size</label>
+            <select id="search-limit" onchange="resetAndSearchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+              <option value="30">30 Leads / Batch</option>
+              <option value="60">60 Leads / Batch</option>
+              <option value="100" selected>100 Leads / Batch</option>
+              <option value="250">250 Leads / Batch</option>
+              <option value="500">500 Leads / Batch</option>
+            </select>
           </div>
 
           <!-- Keyword Search & Button -->
           <div>
             <label class="block text-xs font-medium text-gray-400 mb-1">Keyword / Title</label>
             <div class="flex gap-2">
-              <input type="text" id="search-query" placeholder="e.g. Procurement, Sourcing, VP" onkeydown="if(event.key==='Enter') searchLeads()" class="flex-1 bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
-              <button onclick="searchLeads()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-sm transition">
+              <input type="text" id="search-query" placeholder="e.g. Procurement, Sourcing, VP" onkeydown="if(event.key==='Enter') resetAndSearchLeads()" class="flex-1 bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
+              <button onclick="resetAndSearchLeads()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-sm transition">
                 Search
               </button>
             </div>
@@ -137,11 +224,11 @@
         <!-- Quick Filter Tags -->
         <div class="mt-4 pt-3 border-t border-gray-800 flex items-center gap-2 flex-wrap text-xs">
           <span class="text-gray-500 text-[11px] font-medium">Quick Presets:</span>
-          <button onclick="document.getElementById('search-product').value='Spices'; searchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">🌶️ US Spice Importers</button>
-          <button onclick="document.getElementById('search-product').value='Rice'; searchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">🌾 Basmati Rice Importers</button>
-          <button onclick="document.getElementById('search-product').value='Flanges'; searchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">⚙️ Engineering & Flanges</button>
-          <button onclick="document.getElementById('search-product').value='Textiles'; searchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">🧵 Cotton & Textiles</button>
-          <button onclick="document.getElementById('search-database').value='startups'; document.getElementById('search-product').value=''; searchLeads()" class="px-2.5 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg text-[11px]">💻 Tech Startup Founders</button>
+          <button onclick="document.getElementById('search-product').value='Spices'; resetAndSearchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">🌶️ US Spice Importers</button>
+          <button onclick="document.getElementById('search-product').value='Rice'; resetAndSearchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">🌾 Basmati Rice Importers</button>
+          <button onclick="document.getElementById('search-product').value='Flanges'; resetAndSearchLeads()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-[11px]">⚙️ Engineering & Flanges</button>
+          <button onclick="document.getElementById('search-database').value='startups'; document.getElementById('search-product').value=''; resetAndSearchLeads()" class="px-2.5 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg text-[11px]">🚀 Tech Startups & SaaS</button>
+          <button onclick="document.getElementById('search-database').value='social'; document.getElementById('search-product').value='Spices'; resetAndSearchLeads()" class="px-2.5 py-1 bg-pink-500/20 text-pink-300 border border-pink-500/30 rounded-lg text-[11px]">📸 Instagram #spicesimporter</button>
         </div>
       </div>
 
@@ -149,12 +236,367 @@
       <div id="leads-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Rendered via JS -->
       </div>
+
+      <!-- Pagination & Stream Controls -->
+      <div id="load-more-section" class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-800">
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span id="pagination-status" class="font-semibold text-gray-200">Loaded 0 leads</span>
+          <span class="text-gray-500">•</span>
+          <span class="text-emerald-400 font-bold">99,311,285+ Records in Active Stream</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-load-more" onclick="loadMoreLeads()" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+            <svg class="w-4 h-4 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            <span id="btn-load-more-text">Stream Next Batch from 99M Database</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB: INSTAGRAM & SOCIAL PARSER (parser.im)     -->
+    <!-- ============================================== -->
+    <section id="tab-social" class="tab-section hidden space-y-6">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-pink-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: Scraping Instagram Reels & Bios with parser.im Methodology</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. No Proxies or Login Required:</strong> Unlike private Instagram scrapers that get accounts banned, business Instagram accounts intentionally publish their WhatsApp phone numbers, corporate Gmails, and wholesale links in public bios and captions.
+          </p>
+          <p>
+            <strong>2. Mining Trade Reels:</strong> Paste any reel URL or hashtag (e.g. <code>#spicesimporter</code>, <code>#ricewholesale</code>) to extract buyers commenting "Price please", "MOQ?", or "Catalog", paired with their public business contacts.
+          </p>
+          <p>
+            <strong>3. Pushing to Harvey SDR:</strong> Click <em>"Push to Harvey AI SDR"</em> on any profile card to immediately run ICP matching, trade research, and anti-AI copywriting.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="parseReelSample()" class="px-2 py-1 rounded-lg bg-pink-500/20 text-pink-300 text-[10px] font-semibold hover:bg-pink-500/30">▶ Run Demo Reel Scraping</button>
+            <button onclick="loadSampleParserCSV()" class="px-2 py-1 rounded-lg bg-purple-500/20 text-purple-300 text-[10px] font-semibold hover:bg-purple-500/30">📁 Load Sample parser.im CSV</button>
+            <button onclick="openUserManualModal('social')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read parser.im Manual →</button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Header / Info Bar -->
+      <div class="glass-panel rounded-2xl p-6 border border-gray-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">PARSER.IM ENGINE</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">NO PROXIES NEEDED</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PUBLIC B2B CONTACTS</span>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight mt-2 flex items-center gap-2">
+              <svg class="w-6 h-6 text-pink-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              Instagram B2B Lead Parser & Reel Scraping Engine
+            </h2>
+            <p class="text-xs text-gray-400 mt-1 max-w-3xl">
+              Extract verified public emails, WhatsApp phone numbers, and direct bio links from target accounts, competitor followers, and viral trade reels. Powered by regex bio extraction and direct parser.im CSV import.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="parseReelSample()" class="px-3.5 py-2 bg-pink-600/20 hover:bg-pink-600/30 text-pink-300 border border-pink-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+              <span>▶</span> Demo Reel Lead Scan
+            </button>
+          </div>
+        </div>
+
+        <!-- Parser Input Tools (Grid: Live Target Scan vs CSV Import) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+          <!-- Tool 1: Live Target / Hashtag / Reel URL Scanner -->
+          <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-200 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                1. Live Hashtag / Reel / Profile URL Scan
+              </span>
+              <span class="text-[11px] text-gray-400">Target or Reel URL</span>
+            </div>
+            <div>
+              <input type="text" id="social-target-input" placeholder="e.g. https://www.instagram.com/reel/DfFf3r2tHEn/ or #spicesimporter or @americanspiceco" class="w-full bg-black/40 border border-gray-700/80 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-pink-500 font-mono">
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex-1">
+                <select id="social-niche-select" class="w-full bg-black/40 border border-gray-700/80 rounded-lg px-2.5 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-pink-500">
+                  <option value="Spices & Agro">🌶️ Spices, Herbs & Agro Importers</option>
+                  <option value="Basmati Rice">🌾 Basmati Rice & Grain Wholesalers</option>
+                  <option value="Industrial Piping & Flanges">⚙️ Engineering, Metals & Flanges</option>
+                  <option value="Dehydrated Vegetables">🧄 Dehydrated Garlic & Vegetables</option>
+                  <option value="Eco Home & Handicrafts">🏺 Eco Tableware & Ceramics</option>
+                  <option value="all">🌐 All B2B Wholesale Categories</option>
+                </select>
+              </div>
+              <button onclick="runSocialTargetParse()" class="px-4 py-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                Scrape Contacts
+              </button>
+            </div>
+          </div>
+
+          <!-- Tool 2: Direct parser.im CSV Uploader / Paste -->
+          <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-200 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                2. Import parser.im / Instaparser CSV File
+              </span>
+              <span class="text-[11px] text-gray-400">Direct Drag/Paste</span>
+            </div>
+            <div>
+              <textarea id="social-csv-input" rows="2" placeholder="Paste parser.im CSV content with columns: Username, Email, Phone, Bio, Website..." class="w-full bg-black/40 border border-gray-700/80 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-purple-500 font-mono"></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+              <button onclick="loadSampleParserCSV()" class="text-[11px] text-gray-400 hover:text-purple-400 underline">
+                Load Sample parser.im CSV
+              </button>
+              <button onclick="importSocialCSV()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                Import & Sync to Pipeline
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Leads Display Grid -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-white">Parsed Instagram Leads</h3>
+            <p class="text-xs text-gray-400">Public decision-maker profiles with parsed emails, phone numbers, and bio context.</p>
+          </div>
+          <div id="social-results-badge" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/30">
+            0 Accounts Parsed
+          </div>
+        </div>
+
+        <div id="social-leads-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB: HARVEY AUTONOMOUS AI SDR (ethanplusai)   -->
+    <!-- ============================================== -->
+    <section id="tab-harvey" class="tab-section hidden space-y-6">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-cyan-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: How Harvey's 5 Autonomous SDR Sub-Agents Operate</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. The 5 Sub-Agents:</strong> Harvey coordinates (1) Ingestion Agent, (2) ICP Scorer, (3) Customs & Bio Researcher, (4) Anti-AI Copywriter, and (5) Email Dispatcher & Pacer.
+          </p>
+          <p>
+            <strong>2. Review First vs Autonomous Mode:</strong> In <em>Review First (Safe)</em>, generated emails are held in the Staged Outbox for your 1-click review and approval. In <em>Full Autonomous</em>, leads scoring &ge; 75 are sent automatically according to safe pacing limits (35/day).
+          </p>
+          <p>
+            <strong>3. Calibrating Your Offer:</strong> Click <em>"Configure Harvey (What You Sell)"</em> to customize your business name, product specs, pricing, and ICP keywords.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="toggleHarveyConfigModal()" class="px-2 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-[10px] font-semibold hover:bg-cyan-500/30">⚙️ Configure What You Sell & ICP</button>
+            <button onclick="triggerAutonomousCycle()" class="px-2 py-1 rounded-lg bg-blue-600/30 text-blue-200 text-[10px] font-semibold hover:bg-blue-600/40">⚡ Trigger 1-Click Autonomous Cycle</button>
+            <button onclick="openUserManualModal('harvey')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read Harvey Architecture Manual →</button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Main Harvey Banner -->
+      <div class="glass-panel rounded-2xl p-6 border border-cyan-900/50 bg-gradient-to-br from-cyan-950/30 via-gray-900/80 to-blue-950/30">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                HARVEY v2.1 AUTONOMOUS SDR
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-800 text-gray-300 border border-gray-700">
+                Local AI Sales Employee
+              </span>
+              <span id="harvey-mode-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                Mode: Review First (Safe)
+              </span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+              Harvey — Your Autonomous AI Sales Employee
+            </h2>
+            <p class="text-xs text-gray-300 max-w-3xl leading-relaxed">
+              Inspired by <code class="text-cyan-300 font-mono">ethanplusai/harvey</code>. Runs locally to scout verified container importers across customs manifests and Instagram, drafts 100% humanized trade copy with zero AI clichés, paces delivery to 35/day, triages incoming replies, and coordinates zoom discovery calls.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <button onclick="runHarveyAutonomousCycle(this)" class="px-5 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-cyan-900/30 flex items-center justify-center gap-2 transition active:scale-95">
+              <svg class="w-4 h-4 text-cyan-200 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              <span>Run Autonomous SDR Sprint</span>
+            </button>
+            <button onclick="toggleHarveyConfigModal()" class="px-4 py-3 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-semibold rounded-xl border border-gray-700 transition flex items-center justify-center gap-1.5">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              <span>Edit Offer & ICP</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Multi-Agent Orchestration Team Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-6">
+          <!-- Agent 1: Scout -->
+          <div class="bg-gray-900/90 border border-emerald-500/30 rounded-xl p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> SCOUT AGENT
+              </span>
+              <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Active</span>
+            </div>
+            <p class="text-[11px] text-gray-300 font-medium">Manifest & Stream Hunter</p>
+            <p class="text-[10px] text-gray-400 leading-tight">Searches Customs bill of lading, Apollo 99M, & parser.im for active container buyers.</p>
+          </div>
+
+          <!-- Agent 2: Writer -->
+          <div class="bg-gray-900/90 border border-blue-500/30 rounded-xl p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-400"></span> WRITER AGENT
+              </span>
+              <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">Enforcing</span>
+            </div>
+            <p class="text-[11px] text-gray-300 font-medium">Humanized Copycrafter</p>
+            <p class="text-[10px] text-gray-400 leading-tight">Enforces strict 0-AI-buzzword constraint. Generates personalized 3-touch trade emails.</p>
+          </div>
+
+          <!-- Agent 3: Sender -->
+          <div class="bg-gray-900/90 border border-indigo-500/30 rounded-xl p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-400"></span> SENDER AGENT
+              </span>
+              <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">Paced</span>
+            </div>
+            <p class="text-[11px] text-gray-300 font-medium">Deliverability & Pacing</p>
+            <p class="text-[10px] text-gray-400 leading-tight">Caps sending to 35/day per mailbox, stages review outbox, warms auxiliary domains.</p>
+          </div>
+
+          <!-- Agent 4: Handler -->
+          <div class="bg-gray-900/90 border border-amber-500/30 rounded-xl p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span> HANDLER AGENT
+              </span>
+              <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Listening</span>
+            </div>
+            <p class="text-[11px] text-gray-300 font-medium">Inbound Response Triage</p>
+            <p class="text-[10px] text-gray-400 leading-tight">Classifies replies: Call Bookings, Spec Sheet Requests, Objections, or Opt-Outs.</p>
+          </div>
+
+          <!-- Agent 5: Analyst -->
+          <div class="bg-gray-900/90 border border-cyan-500/30 rounded-xl p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span> ANALYST AGENT
+              </span>
+              <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300">Tracking</span>
+            </div>
+            <p class="text-[11px] text-gray-300 font-medium">Pipeline & ROI Tracker</p>
+            <p class="text-[10px] text-gray-400 leading-tight">Tracks pipeline velocity, 0% bounce targets, and projected container contract revenue.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outbox & Live Logs (Two Column Layout) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left: Staged Outbox Table (2 cols) -->
+        <div class="lg:col-span-2 glass-panel rounded-2xl p-6 border border-gray-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Harvey Staged Outbox
+              </h3>
+              <p class="text-xs text-gray-400">Review humanized emails drafted by Writer agent before dispatch.</p>
+            </div>
+            <div id="harvey-outbox-badge" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              0 Staged
+            </div>
+          </div>
+
+          <div class="overflow-x-auto rounded-xl border border-gray-800">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-gray-900/90 text-gray-400 uppercase font-semibold">
+                <tr>
+                  <th class="py-2.5 px-3">Recipient & Company</th>
+                  <th class="py-2.5 px-3">Target Commodity</th>
+                  <th class="py-2.5 px-3">Subject & Preview</th>
+                  <th class="py-2.5 px-3">Safety Score</th>
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="harvey-outbox-body" class="divide-y divide-gray-800/60 font-mono">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Live Activity Feed / Terminal Logger (1 col) -->
+        <div class="glass-panel rounded-2xl p-6 border border-gray-800 space-y-4 flex flex-col h-[520px]">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live Autonomous Activity Feed
+            </h3>
+            <span class="text-[11px] font-mono text-gray-500">Auto-Refreshed</span>
+          </div>
+
+          <div id="harvey-terminal-logs" class="flex-1 bg-black/70 rounded-xl p-3.5 border border-gray-800 font-mono text-xs overflow-y-auto space-y-2.5">
+            <!-- Logs rendered via JS -->
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ============================================== -->
     <!-- TAB 2: SALES PIPELINE & CRM                   -->
     <!-- ============================================== -->
     <section id="tab-pipeline" class="tab-section hidden space-y-6">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-indigo-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: Pipeline Stages, Batch Verification, and Smartlead / Instantly CSV Export</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. Stage Progression:</strong> Move contacts smoothly from <em>Discovered</em> ➔ <em>Verified</em> ➔ <em>Outreach Active</em> ➔ <em>Replied</em> ➔ <em>Retainer Closed</em>.
+          </p>
+          <p>
+            <strong>2. Batch Verification Waterfall:</strong> Click <em>"Batch Verify All Leads"</em> to execute syntax, DNS MX record, and SMTP handshake checks to guarantee a bounce rate under 1.5%.
+          </p>
+          <p>
+            <strong>3. Smartlead & Instantly Compatibility:</strong> Click <em>"Export to Smartlead / Instantly"</em> to download clean UTF-8 CSVs populated with custom variables ready for direct campaign upload.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="batchVerifyCRM()" class="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold hover:bg-emerald-500/30">✓ Batch Verify CRM Leads</button>
+            <button onclick="exportToCSV()" class="px-2 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 text-[10px] font-semibold hover:bg-indigo-500/30">📥 Export Smartlead CSV</button>
+            <button onclick="openUserManualModal('retainers')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read Pipeline & Retainer Manual →</button>
+          </div>
+        </div>
+      </details>
+
       <!-- KPI Stats Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
         <div class="glass-panel rounded-xl p-4 border border-gray-800">
@@ -184,9 +626,13 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 class="text-lg font-bold text-white">Active Prospect Pipeline</h3>
-            <p class="text-xs text-gray-400">Track stage changes and sync directly with Smartlead / Instantly.</p>
+            <p class="text-xs text-gray-400">Track stage changes, verify in bulk, and sync directly with Smartlead / Instantly.</p>
           </div>
           <div class="flex items-center gap-2">
+            <button onclick="batchVerifyCRM(this)" class="px-3.5 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Batch Verify Pipeline
+            </button>
             <a href="/api/crm/export-csv" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               Export Smartlead CSV
@@ -199,11 +645,12 @@
             <thead class="bg-gray-900/80 text-gray-400 text-xs uppercase font-semibold">
               <tr>
                 <th class="py-3 px-4">Decision Maker</th>
-                <th class="py-3 px-4">Email</th>
+                <th class="py-3 px-4">Email & Health</th>
                 <th class="py-3 px-4">Product Category</th>
                 <th class="py-3 px-4">Stage</th>
                 <th class="py-3 px-4">Latest Notes</th>
                 <th class="py-3 px-4 text-right">Update Stage</th>
+                <th class="py-3 px-3 text-center">Action</th>
               </tr>
             </thead>
             <tbody id="crm-leads-table-body">
@@ -243,10 +690,249 @@
     </section>
 
     <!-- ============================================== -->
-    <!-- TAB 3: DELIVERABILITY & DNS HUB               -->
+    <!-- TAB 3: HUMANIZED EMAIL VAULT                  -->
+    <!-- ============================================== -->
+    <section id="tab-templates" class="tab-section hidden space-y-6">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-emerald-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: The 10 Anti-AI Humanized Copywriting Commandments & Customs Proof</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. Banned AI Triggers:</strong> Banned: <em>"I hope this finds you well"</em>, <em>"game-changer"</em>, <em>"delve"</em>, <em>"leverage"</em>, <em>"cutting-edge"</em>, <em>"excited to reach out"</em>. Corporate buyers trash them immediately.
+          </p>
+          <p>
+            <strong>2. The Proven Trade Pattern:</strong> Reference their actual import destination/port + provide concrete container specs or FOB/CIF unit pricing + ask a frictionless 5-word question (<em>"Should I send spec sheet?"</em>).
+          </p>
+          <p>
+            <strong>3. Pacing & Sequence:</strong> 3 touches maximum. Never send 7 follow-ups. Keep touch 1 under 65 words and touch 2 under 30 words.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="openUserManualModal('antiai')" class="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold hover:bg-emerald-500/30">📖 Open 10 Anti-AI Commandments Table</button>
+            <button onclick="filterVaultCategory('Agro & Food Commodities')" class="px-2 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-[10px] font-semibold hover:bg-blue-500/30">🌶️ Agro & Spices Templates</button>
+            <button onclick="filterVaultCategory('Industrial & Metals')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">⚙️ Engineering Templates</button>
+          </div>
+        </div>
+      </details>
+
+      <div class="glass-panel rounded-2xl p-6 border border-gray-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ZERO AI FLUFF</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">TESTED B2B TRADE SEQUENCES</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">SUB-75 WORDS</span>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight mt-2 flex items-center gap-2">
+              Humanized Cold Email Vault
+            </h2>
+            <p class="text-xs text-gray-400 mt-1 max-w-3xl">
+              Strictly non-AI sounding cold email copy designed specifically for global commodity buyers, container importers, and startup decision makers. Every sequence uses real shipment hooks, brief conversational inquiries, and zero corporate buzzwords.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="filterVaultCategory('all')" class="vault-filter-btn px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold">All Niches</button>
+            <button onclick="filterVaultCategory('Agro & Food Commodities')" class="vault-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs">Agro & Spices</button>
+            <button onclick="filterVaultCategory('Industrial & Metals')" class="vault-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs">Engineering/Metals</button>
+            <button onclick="filterVaultCategory('B2B Tech & SaaS')" class="vault-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs">Tech / SaaS</button>
+          </div>
+        </div>
+
+        <!-- Human Authenticity Auditor -->
+        <div class="mt-6 p-4 rounded-xl bg-gray-900/80 border border-gray-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-gray-200 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Human Authenticity & Anti-Buzzword Auditor
+            </span>
+            <span class="text-[11px] text-gray-400">Paste your own copy to check if it sounds like AI</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <textarea id="audit-input" rows="3" placeholder="Paste cold email draft here to check for robotic words ('game-changing', 'cutting-edge', 'I hope this email finds you well')..." class="w-full bg-black/40 border border-gray-700/80 rounded-lg p-2.5 text-xs text-gray-200 font-mono"></textarea>
+            <div id="audit-output" class="p-2.5 rounded-lg bg-black/40 border border-gray-800 text-xs font-mono text-gray-300 whitespace-pre-wrap overflow-y-auto max-h-24">
+              Audit results will appear here with score & clean replacement recommendations.
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button onclick="auditHumanAuthenticity()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition">
+              Audit & Humanize Copy
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vault Cards Grid -->
+      <div id="vault-templates-container" class="space-y-4">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: AGENCY EXECUTION TOOLKIT & PROPOSALS   -->
+    <!-- ============================================== -->
+    <section id="tab-execution" class="tab-section hidden space-y-6">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-amber-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: Generating Retainer Proposals ($1.5k - $6.5k/mo) and Bulk Waterfall Verification</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. Retainer Proposal Engine:</strong> Pick a client tier (Starter $1,500/mo, Growth $3,500/mo, Enterprise $6,500/mo) to generate an executive-ready proposal covering lead volume, verified contact delivery, and outreach SLAs.
+          </p>
+          <p>
+            <strong>2. Bulk Waterfall Verification:</strong> Paste up to 1,000 raw corporate emails into the validator to check syntax, MX records, disposable domains, and SMTP connection health before sending.
+          </p>
+          <p>
+            <strong>3. Client Deliverables:</strong> Generate ready-to-sign HTML proposals with structured deliverables, guarantee terms, and payment milestones.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="document.getElementById('proposal-client-name').value='Royal Spices LLC'; generateClientProposal()" class="px-2 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-[10px] font-semibold hover:bg-amber-500/30">📄 Generate $3,500/mo Growth Proposal</button>
+            <button onclick="openUserManualModal('retainers')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read Retainer Pricing Guide →</button>
+          </div>
+        </div>
+      </details>
+
+      <div class="glass-panel rounded-2xl p-6 border border-gray-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">AGENCY EXECUTION</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">CLIENT PITCH SCRIPTS</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">BULK WATERFALL</span>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight mt-2">
+              Agency Execution Toolkit & Client Proposals
+            </h2>
+            <p class="text-xs text-gray-400 mt-1 max-w-3xl">
+              Turnkey assets to close and execute B2B export clients. Generate structured retainer agreements, calculate delivery ROI, and verify custom email lists via waterfall MX/SMTP checks.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2 Column Layout: Proposal Generator vs Waterfall Verifier -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <!-- Proposal Generator Card -->
+          <div class="space-y-4 bg-gray-900/60 p-5 rounded-xl border border-gray-800">
+            <h3 class="font-bold text-white text-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Generate Exporter Client Pitch Proposal
+            </h3>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-gray-400 mb-1">Exporter Name</label>
+                <input type="text" id="prop-exporter-name" value="Aarav Sharma" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1.5 text-white">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-1">Company Name</label>
+                <input type="text" id="prop-exporter-company" value="Surat Agro Exports Ltd" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1.5 text-white">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-1">Product / Commodity</label>
+                <input type="text" id="prop-product" value="Organic Turmeric & Spices" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1.5 text-white">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-1">Target Market</label>
+                <input type="text" id="prop-country" value="United States & Germany" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1.5 text-white">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-gray-400 mb-1">Commercial Pricing Tier</label>
+                <select id="prop-tier" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1.5 text-white">
+                  <option value="growth">Growth Engagement: INR 65,000 / mo (1,500 Verified Importers, 4-6 Discovery Calls)</option>
+                  <option value="hybrid">Performance Hybrid: INR 25,000 / mo + INR 5,000 / Verified Meeting</option>
+                  <option value="starter">Starter Advisory: INR 35,000 / mo (500 Verified Importers, 2-3 Discovery Calls)</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="generateProposalDoc()" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-semibold transition">
+              Generate Formal Client Proposal
+            </button>
+
+            <!-- Formal PDF Proposal Output Box -->
+            <div id="proposal-output-container" class="hidden space-y-3 pt-3 border-t border-gray-800">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span class="text-xs font-bold text-white">2-Page Legal Agreement Generated</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="downloadProposalPDF()" class="px-3 py-1.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white rounded-lg text-xs font-bold shadow-md shadow-amber-600/20 flex items-center gap-1.5 transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Download PDF</span>
+                  </button>
+                  <button onclick="viewProposalPDF()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold rounded-lg text-xs border border-gray-700 flex items-center gap-1.5 transition">
+                    <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    <span>View in Browser</span>
+                  </button>
+                  <button onclick="copyProposalToClipboard(this)" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg text-xs font-medium flex items-center gap-1 transition">
+                    📋 Copy Text
+                  </button>
+                </div>
+              </div>
+
+              <!-- Styled Formal Proposal Document Preview -->
+              <div id="proposal-preview-card" class="bg-gray-950/90 rounded-xl p-4 border border-amber-500/30 text-xs space-y-3 font-sans text-gray-300">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bulk Waterfall Verifier Card -->
+          <div class="space-y-4 bg-gray-900/60 p-5 rounded-xl border border-gray-800">
+            <h3 class="font-bold text-white text-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              Bulk Waterfall Email Verifier
+            </h3>
+            <p class="text-xs text-gray-400">Filter out spam traps, disposable domains, and catch-all servers before uploading to Smartlead.</p>
+            <textarea id="batch-verify-input" rows="4" placeholder="Paste email addresses (one per line or comma-separated):&#10;procure@transatlantic-foods.com&#10;buyer@americanspiceimports.com&#10;test@mailinator.com" class="w-full bg-black/40 border border-gray-700 rounded-lg p-2.5 text-xs text-white font-mono"></textarea>
+            <button onclick="runBatchVerification()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition">
+              Verify Emails (0% Bounce Guarantee)
+            </button>
+            <div id="batch-verify-output"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB 5: DELIVERABILITY & DNS HUB               -->
     <!-- ============================================== -->
     <section id="tab-deliverability" class="tab-section hidden space-y-6">
-      <!-- DNS Generator -->
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-cyan-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: DNS Setup (SPF, DKIM, DMARC), Custom Tracking Domains & Warmup Ramp-up</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. Mandatory DNS Trio:</strong> Google and Yahoo enforce SPF, DKIM (2048-bit), and DMARC policies. Never send outbound from your primary corporate domain; always buy dedicated secondary domains (e.g. <code>getcompany.com</code>).
+          </p>
+          <p>
+            <strong>2. Custom Tracking Domain (CNAME):</strong> Prevents shared redirect blacklisting by routing open/click tracking through your own domain subdomain (e.g. <code>track.getcompany.com</code>).
+          </p>
+          <p>
+            <strong>3. The 21-Day Warmup Protocol:</strong> Never send 50 emails on day 1. Follow the graduated schedule: Days 1-7: 5/day warmup; Days 8-14: 15/day; Days 15-21: 30/day; Max cap: 35-40/day per mailbox.
+          </p>
+          <div class="pt-1 flex gap-2 flex-wrap">
+            <button onclick="document.getElementById('dns-domain-input').value='globaltrade-exports.com'; generateDNS()" class="px-2 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-[10px] font-semibold hover:bg-cyan-500/30">⚡ Generate DNS for Secondary Domain</button>
+            <button onclick="openUserManualModal('deliverability')" class="px-2 py-1 rounded-lg bg-gray-800 text-gray-300 text-[10px] font-semibold hover:bg-gray-700">Read 21-Day Warmup Playbook →</button>
+          </div>
+        </div>
+      </details>
+
       <div class="glass-panel rounded-2xl p-6 border border-gray-800 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -326,24 +1012,553 @@
     </section>
 
     <!-- ============================================== -->
-    <!-- TAB 4: MASTER STARTUP PLAYBOOK                -->
+    <!-- TAB 6: MASTER STARTUP PLAYBOOK (HTML EDITION) -->
     <!-- ============================================== -->
     <section id="tab-playbook" class="tab-section hidden space-y-6">
-      <div class="glass-panel rounded-2xl p-6 border border-gray-800 space-y-4">
-        <div class="flex items-center justify-between">
+      <!-- Tab Contextual Quick Guide -->
+      <details class="glass-panel rounded-xl p-3 border border-gray-800/80 bg-gray-900/40 text-xs group cursor-pointer hover:border-gray-700 transition">
+        <summary class="font-bold text-purple-300 flex items-center justify-between list-none">
+          <span class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Quick Guide: Master Execution Playbook & The $10K/mo Outbound Agency Roadmap</span>
+          </span>
+          <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-gray-800/80 text-gray-300 space-y-2 text-[11px] leading-relaxed">
+          <p>
+            <strong>1. The High-Value Agency Model:</strong> Don't sell raw software that manufacturers will abandon; deliver <em>"Done-For-You Qualified Buyer Introductions"</em> on retainer. Target commodity manufacturers who lack active English outbound sales teams.
+          </p>
+          <p>
+            <strong>2. Pricing Power:</strong> Charge ₹35,000 – ₹65,000/mo ($1,500 – $3,500/mo) flat retainer + 1.5% to 3% closing commission on export order LC (Letter of Credit) value.
+          </p>
+          <p>
+            <strong>3. Native HTML Architecture:</strong> This master blueprint is built in 100% native HTML with interactive section filters, unit economics calculators, and ready-to-use pitch scripts.
+          </p>
+        </div>
+      </details>
+
+      <!-- Main Playbook Container -->
+      <div class="glass-panel rounded-2xl p-6 border border-gray-800 space-y-6">
+        <!-- Playbook Header Banner -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-gray-800">
           <div>
-            <h3 class="text-xl font-bold text-white">Startup Master Execution Playbook</h3>
-            <p class="text-xs text-gray-400">The complete blueprint covering GTM, pitch scripts, unit economics, and 30-day roadmap.</p>
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">Executive Blueprint</span>
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">Operational Asset</span>
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 uppercase tracking-wider">B2B Outbound Engine</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              Master Execution Playbook & Revenue Blueprint
+            </h2>
+            <p class="text-xs text-gray-400 mt-1 max-w-3xl leading-relaxed">
+              Prepared for the EximFlow Executive Team & Partners. The definitive operational playbook for turning customs trade intelligence, 99M data streaming, and humanized outbound into high-margin monthly retainers.
+            </p>
           </div>
-          <button onclick="navigator.clipboard.writeText(document.getElementById('playbook-content').textContent); alert('Playbook copied to clipboard!')" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-            Copy Markdown
-          </button>
+          <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
+            <button onclick="window.print()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              Print / PDF
+            </button>
+            <button onclick="copyPlaybookOverview()" class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/20 flex items-center gap-1.5 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              Copy Playbook Text
+            </button>
+          </div>
         </div>
 
-        <pre id="playbook-content" class="p-4 bg-gray-900 rounded-xl border border-gray-800 text-xs font-mono text-gray-300 whitespace-pre-wrap leading-relaxed max-h-[70vh] overflow-y-auto">
-Loading playbook documentation...
-        </pre>
+        <!-- Section Jump Filters -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs">
+          <button onclick="filterPlaybookSection('all')" data-psec="all" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-purple-600 text-white text-xs font-semibold shadow transition whitespace-nowrap">All Sections</button>
+          <button onclick="filterPlaybookSection('summary')" data-psec="summary" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">1. Value Prop</button>
+          <button onclick="filterPlaybookSection('market')" data-psec="market" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">2. Exporter Market</button>
+          <button onclick="filterPlaybookSection('model')" data-psec="model" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">3. Pricing & Economics</button>
+          <button onclick="filterPlaybookSection('data')" data-psec="data" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">4. Data Waterfall</button>
+          <button onclick="filterPlaybookSection('deliverability')" data-psec="deliverability" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">5. Deliverability Bible</button>
+          <button onclick="filterPlaybookSection('copywriting')" data-psec="copywriting" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">6. 3-Touch Sequences</button>
+          <button onclick="filterPlaybookSection('triage')" data-psec="triage" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">7. Inbound Qualification</button>
+          <button onclick="filterPlaybookSection('scripts')" data-psec="scripts" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">8. Sales Pitch Scripts</button>
+          <button onclick="filterPlaybookSection('roadmap')" data-psec="roadmap" class="playbook-filter-btn px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition whitespace-nowrap">9. 30-Day Roadmap</button>
+        </div>
+
+        <!-- PLAYBOOK SECTIONS (NATIVE HTML) -->
+        <div id="playbook-sections-wrapper" class="space-y-8 text-xs text-gray-300 leading-relaxed">
+
+          <!-- 1. Executive Summary & Core Value Proposition -->
+          <article id="psec-summary" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-xs border border-purple-500/30">1</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Executive Summary & Core Value Proposition</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- The Problem Card -->
+              <div class="p-4 rounded-xl bg-red-950/20 border border-red-500/20 space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-red-400 font-bold">❌ The Problem</span>
+                  <span class="text-[10px] text-red-300/80 font-mono">Traditional Exporter Traps</span>
+                </div>
+                <ul class="space-y-1.5 text-gray-300 text-[11px] list-disc list-inside">
+                  <li><strong>Overseas Trade Fairs (Gulfood, Anuga, SIAL):</strong> Cost ₹8–20 Lakhs per stall with unpredictable footfall and heavy travel costs.</li>
+                  <li><strong>B2B Directories (Alibaba, IndiaMART, TradeIndia):</strong> Flooded with domestic price-shoppers, lowballers, and unverified brokers.</li>
+                  <li><strong>Zero Outbound Infrastructure:</strong> 95% of manufacturers have no dedicated sales development team; they passively wait for inbound inquiries.</li>
+                </ul>
+              </div>
+
+              <!-- The Solution Card -->
+              <div class="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/20 space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-emerald-400 font-bold">✓ The Solution: EximFlow Engine</span>
+                  <span class="text-[10px] text-emerald-300/80 font-mono">Autonomous Pipeline</span>
+                </div>
+                <ul class="space-y-1.5 text-gray-300 text-[11px] list-disc list-inside">
+                  <li><strong>Verified Global Importers:</strong> Identifies genuine container buyers using customs shipment bills of lading + Apollo contact streams.</li>
+                  <li><strong>Supply Chain Personalization:</strong> Crafts hyper-relevant 3-touch trade outreach focusing on FOB/CIF pricing, BRC/FDA certifications, and lab COAs.</li>
+                  <li><strong>Direct-to-Inbox Deliverability:</strong> Primary inbox placement via dedicated secondary domains and 21-day automated ramp-up.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- 2. Market Analysis & The Exporter Goldmine -->
+          <article id="psec-market" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/30">2</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Market Analysis & The Exporter Goldmine</h3>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                <span class="text-[10px] uppercase font-bold text-blue-400">Massive Container Deal Sizes</span>
+                <div class="text-lg font-black text-white mt-1">$30,000 – $500,000+</div>
+                <p class="text-[11px] text-gray-400 mt-1">Export orders for Basmati Rice, Turmeric, or Stainless Flanges have huge order values, making ₹65,000/mo retainer an easy decision.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                <span class="text-[10px] uppercase font-bold text-indigo-400">Untapped Market Space</span>
+                <div class="text-lg font-black text-white mt-1">Zero Modern Competition</div>
+                <p class="text-[11px] text-gray-400 mt-1">Nearly all outbound tools target Silicon Valley SaaS. Almost nobody provides automated outbound tailored for industrial & agro exporters.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                <span class="text-[10px] uppercase font-bold text-cyan-400">Distinct Decision Makers</span>
+                <div class="text-lg font-black text-white mt-1">Clear Target Titles</div>
+                <p class="text-[11px] text-gray-400 mt-1">Target <code>VP of Procurement</code>, <code>Chief Sourcing Officer</code>, <code>Director of Supply Chain</code>, and <code>Category Import Buyer</code>.</p>
+              </div>
+            </div>
+
+            <!-- Top 5 Sectors Table -->
+            <div class="overflow-x-auto rounded-xl border border-gray-800">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-gray-900 text-gray-400 uppercase font-semibold">
+                  <tr>
+                    <th class="p-3">Sector</th>
+                    <th class="p-3">Core Commodities</th>
+                    <th class="p-3">Primary Buyer Hubs</th>
+                    <th class="p-3">Critical Proof Requisites</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800/80 text-[11px]">
+                  <tr>
+                    <td class="p-3 font-bold text-white">1. Agro & Spices</td>
+                    <td class="p-3 text-gray-300">Organic Turmeric, Cumin, Basmati Rice, Dehydrated Garlic/Onions</td>
+                    <td class="p-3 text-cyan-300">USA, UAE, Germany, UK, Netherlands</td>
+                    <td class="p-3 text-gray-400">FDA Registration, BRC, USDA Organic, SGS Lab COA</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">2. Textiles & Garments</td>
+                    <td class="p-3 text-gray-300">Organic Cotton Apparels, Bed Linen, Home Furnishings, Denim</td>
+                    <td class="p-3 text-cyan-300">USA, Germany, France, Australia</td>
+                    <td class="p-3 text-gray-400">OEKO-TEX Standard 100, GOTS Certification, MOQ Specs</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">3. Engineering & Castings</td>
+                    <td class="p-3 text-gray-300">Stainless Steel Flanges, CNC Machined Parts, Brass Valves</td>
+                    <td class="p-3 text-cyan-300">USA (Houston, Chicago), Germany, Italy</td>
+                    <td class="p-3 text-gray-400">ISO 9001, Mill Test Certificates (EN 10204 3.1)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">4. Chemicals & APIs</td>
+                    <td class="p-3 text-gray-300">Active Pharmaceutical Ingredients, Dyes, Specialty Polymers</td>
+                    <td class="p-3 text-cyan-300">USA, Brazil, Japan, EU</td>
+                    <td class="p-3 text-gray-400">GMP Clearance, REACH Compliance, Drug Master Files</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">5. Sustainable Packaging</td>
+                    <td class="p-3 text-gray-300">Biodegradable Films, Corrugated Boxes, Polybags</td>
+                    <td class="p-3 text-cyan-300">UK, Canada, Germany, UAE</td>
+                    <td class="p-3 text-gray-400">ASTM D6400, EN 13432 Compostability Standards</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- 3. The Business Model: Pricing & Unit Economics -->
+          <article id="psec-model" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs border border-emerald-500/30">3</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Productized DFY Agency Model & 90% Gross Margins</h3>
+            </div>
+
+            <!-- Retainer Tier Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <span class="text-[10px] uppercase font-bold text-blue-400">Starter Pilot</span>
+                <div class="text-xl font-black text-white">₹35,000 <span class="text-xs font-normal text-gray-400">/ mo</span></div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>500 Verified Importer Leads</li>
+                  <li>2 Secondary Domains & Mailboxes</li>
+                  <li>Custom 3-Touch Cold Trade Sequence</li>
+                  <li>Real-time DNS & MX Verification</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/40 space-y-2 relative">
+                <span class="absolute top-3 right-3 text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-300 border border-purple-500/40 uppercase">Top Seller</span>
+                <span class="text-[10px] uppercase font-bold text-purple-300">Growth Retainer</span>
+                <div class="text-xl font-black text-white">₹65,000 <span class="text-xs font-normal text-gray-400">/ mo</span></div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>1,500 Verified Importer Leads</li>
+                  <li>4 Dedicated Secondary Domains</li>
+                  <li>Harvey Autonomous SDR Active</li>
+                  <li>Automated Inbound Reply Triage</li>
+                  <li>Guaranteed 3–5 International Zoom Calls</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <span class="text-[10px] uppercase font-bold text-amber-400">Performance Hybrid</span>
+                <div class="text-xl font-black text-white">₹25,000 <span class="text-xs font-normal text-gray-400">+ ₹5k/call</span></div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>1,000 Verified Importer Leads</li>
+                  <li>Domain Setup & Warmup Included</li>
+                  <li>₹25k Base Infrastructure Fee</li>
+                  <li>₹5,000 per verified Zoom call attended</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Unit Economics & Margins Table -->
+            <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-3">
+              <h4 class="font-bold text-white text-xs">Cost of Goods Sold (COGS) & Net Margin per Client</h4>
+              <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs">
+                <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                  <div class="text-[10px] text-gray-400">2x Domains</div>
+                  <div class="font-bold text-white mt-0.5">₹150 / mo</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                  <div class="text-[10px] text-gray-400">4x Mailboxes</div>
+                  <div class="font-bold text-white mt-0.5">₹1,600 / mo</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                  <div class="text-[10px] text-gray-400">Email Verification</div>
+                  <div class="font-bold text-white mt-0.5">₹450 / mo</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                  <div class="text-[10px] text-gray-400">API Tokens</div>
+                  <div class="font-bold text-white mt-0.5">₹250 / mo</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                  <div class="text-[10px] text-gray-400">Smartlead Seat</div>
+                  <div class="font-bold text-white mt-0.5">₹2,000 / mo</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+                  <div class="text-[10px] text-emerald-400 font-bold">Total COGS</div>
+                  <div class="font-black text-emerald-300 mt-0.5">~₹4,450 / mo</div>
+                </div>
+              </div>
+              <div class="pt-2 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400 border-t border-gray-800/80">
+                <span>At ₹45,000/mo average client retainer: <strong>Gross Profit = ₹40,550/mo (~90% Margin!)</strong></span>
+                <span class="text-emerald-400 font-bold">5 Retainer Clients = ₹2,00,000+ Net Monthly Cashflow</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4. Data Intelligence: Apollo 99M & Customs Waterfall -->
+          <article id="psec-data" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs border border-cyan-500/30">4</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Data Intelligence & Multi-Source Waterfall</h3>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-3 font-mono text-[11px]">
+              <div class="text-cyan-400 font-bold">MULTI-SOURCE ENRICHMENT PIPELINE</div>
+              <div class="space-y-1 pl-3 border-l-2 border-cyan-500/30">
+                <div class="text-white">Step 1: US Customs AMS Bills of Lading</div>
+                <div class="text-gray-400 pl-3">└── Pinpoints overseas companies actively importing this exact product with container TEU volume and arrival ports.</div>
+                <div class="text-white mt-2">Step 2: 99.3M Apollo Zero-Disk Streaming Reader</div>
+                <div class="text-gray-400 pl-3">└── Queries 52 CSVs inside the 19.6 GB zip archive to find the Head of Sourcing / Procurement Director without consuming 60GB disk space.</div>
+                <div class="text-white mt-2">Step 3: parser.im Instagram Scraper</div>
+                <div class="text-gray-400 pl-3">└── Mines public wholesale bios for international WhatsApp numbers (+1, +44, +971, +91) and buyer comments on viral trade reels.</div>
+                <div class="text-white mt-2">Step 4: 4-Tier Waterfall Email Verification Filter</div>
+                <div class="text-gray-400 pl-3">└── Syntax Check ➔ Disposable Domain Blacklist ➔ Real-time DNS MX Lookup ➔ SMTP Handshake (&lt;1.5% bounce rate guarantee).</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5. Deliverability Bible -->
+          <article id="psec-deliverability" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-300 font-bold flex items-center justify-center text-xs border border-pink-500/30">5</span>
+              <h3 class="text-base font-bold text-white tracking-tight">The Cold Email Deliverability Bible (Avoid Spam Bans)</h3>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-300 text-xs font-semibold">
+              ⚠️ CARDINAL RULE: NEVER send cold outreach from your primary corporate domain. Always use dedicated secondary domains.
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h4 class="font-bold text-white text-xs">DNS Record Requirements</h4>
+                <ul class="space-y-1.5 text-[11px] text-gray-300">
+                  <li><strong>SPF:</strong> <code class="text-blue-300 font-mono">v=spf1 include:_spf.google.com ~all</code></li>
+                  <li><strong>DKIM:</strong> 2048-bit TXT key from Google Workspace or MS 365 admin.</li>
+                  <li><strong>DMARC:</strong> <code class="text-blue-300 font-mono">v=DMARC1; p=quarantine; pct=100; rua=mailto:...</code></li>
+                  <li><strong>Custom Tracking CNAME:</strong> Avoids sharing open/click tracking reputation with other users.</li>
+                  <li><strong>Max Mailbox Density:</strong> Strictly 2 mailboxes per domain.</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h4 class="font-bold text-white text-xs">21-Day Warmup Schedule</h4>
+                <div class="space-y-1 text-[11px]">
+                  <div class="flex justify-between p-1.5 rounded bg-gray-950">
+                    <span class="text-gray-300">Days 1–7 (Warmup Only):</span>
+                    <span class="text-cyan-300 font-mono font-bold">0 cold / 5 warmup</span>
+                  </div>
+                  <div class="flex justify-between p-1.5 rounded bg-gray-950">
+                    <span class="text-gray-300">Days 8–14 (Initial Testing):</span>
+                    <span class="text-cyan-300 font-mono font-bold">5 cold / 15 warmup</span>
+                  </div>
+                  <div class="flex justify-between p-1.5 rounded bg-gray-950">
+                    <span class="text-gray-300">Days 15–21 (Scaling):</span>
+                    <span class="text-cyan-300 font-mono font-bold">15 cold / 15 warmup</span>
+                  </div>
+                  <div class="flex justify-between p-1.5 rounded bg-emerald-950/40 border border-emerald-500/30">
+                    <span class="text-emerald-300 font-bold">Day 22+ (Max Cruising Cap):</span>
+                    <span class="text-emerald-300 font-mono font-bold">30–35 cold / mailbox / day</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6. Humanized 3-Touch Trade Sequences -->
+          <article id="psec-copywriting" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs border border-emerald-500/30">6</span>
+              <h3 class="text-base font-bold text-white tracking-tight">The Proven 3-Touch Humanized Trade Sequence</h3>
+            </div>
+
+            <p class="text-gray-400 text-[11px]">
+              Commodity and export procurement officers trash corporate marketing jargon. They care about 3 things: <strong>direct manufacturer FOB/CIF pricing</strong>, <strong>food/industrial certifications</strong>, and <strong>reliable container transit times</strong>.
+            </p>
+
+            <div class="space-y-3">
+              <!-- Touch 1 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-blue-400 text-xs">Touch 1: Direct Supply Inquiry (Day 1)</span>
+                  <span class="text-[10px] text-gray-500 font-mono">Word Count: &lt;65 words</span>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 text-gray-200 font-mono text-[11px] leading-relaxed">
+                  <p><strong>Subject:</strong> quick question re: [Product] sourcing for [Company Name]</p>
+                  <p class="mt-2">Hi [First Name],</p>
+                  <p class="mt-1">Saw that [Company Name] imports [Product/Category] through [Port Name].</p>
+                  <p class="mt-1">We are direct manufacturers and exporters of [Product] in India, supplying BRC and FDA-registered shipments across North America.</p>
+                  <p class="mt-1">Because we process in-house, we typically supply grade-A lots at 12–15% lower landed costs compared to domestic distributors, with guaranteed container turnaround.</p>
+                  <p class="mt-1">Are you open to reviewing our current spec sheet and CIF rates for your upcoming cycle?</p>
+                  <p class="mt-2">Best regards,<br>[Sender Name] | [Sender Company]<br>[WhatsApp Number]</p>
+                </div>
+              </div>
+
+              <!-- Touch 2 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-indigo-400 text-xs">Touch 2: Social Proof & Lab Certificate Follow-up (Day 4)</span>
+                  <span class="text-[10px] text-gray-500 font-mono">Word Count: &lt;35 words</span>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 text-gray-200 font-mono text-[11px] leading-relaxed">
+                  <p><strong>Subject:</strong> Re: quick question re: [Product] sourcing for [Company Name]</p>
+                  <p class="mt-2">Hi [First Name],</p>
+                  <p class="mt-1">Following up on my note earlier. We just completed a 40ft container dispatch of [Product] to a major distributor in New Jersey last week, with full SGS lab COA clearance.</p>
+                  <p class="mt-1">Would you be open to receiving a complimentary 500g product sample to test in your QA lab?</p>
+                  <p class="mt-1">Happy to courier it over to your facility.</p>
+                  <p class="mt-2">Best,<br>[Sender Name]</p>
+                </div>
+              </div>
+
+              <!-- Touch 3 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-purple-400 text-xs">Touch 3: The Respectful Breakup (Day 8)</span>
+                  <span class="text-[10px] text-gray-500 font-mono">Word Count: &lt;30 words</span>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 text-gray-200 font-mono text-[11px] leading-relaxed">
+                  <p><strong>Subject:</strong> closing loop on [Product] supply</p>
+                  <p class="mt-2">Hi [First Name],</p>
+                  <p class="mt-1">I assume your [Product] procurement contracts are locked in for this quarter.</p>
+                  <p class="mt-1">I won't follow up further, but if your supply chain ever faces shipping delays or you need a competitive backup quotation for Q3/Q4, feel free to keep my details handy.</p>
+                  <p class="mt-2">Warmly,<br>[Sender Name]</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7. Discovery Call Qualification Checklist -->
+          <article id="psec-triage" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs border border-amber-500/30">7</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Discovery Call Qualification & Sales Partner Checklist</h3>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-3">
+              <h4 class="font-bold text-white text-xs">The 4-Question International Exim Qualification Script</h4>
+              <p class="text-[11px] text-gray-400">Train your sales partner or client to ask these exact 4 questions on incoming Zoom calls:</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                <div class="p-3 rounded-lg bg-gray-950 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">1. Container Volume:</span>
+                  <p class="text-gray-300 mt-1">"What is your average monthly or quarterly container volume (FCL/LCL) for this commodity?"</p>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">2. Quality Specifications:</span>
+                  <p class="text-gray-300 mt-1">"What are your strict QA specs (mesh size, moisture content, purity %, packaging types)?"</p>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">3. Preferred Incoterms:</span>
+                  <p class="text-gray-300 mt-1">"Which shipping terms do you operate under (FOB Mundra/Nhava Sheva or CIF New York/Rotterdam)?"</p>
+                </div>
+                <div class="p-3 rounded-lg bg-gray-950 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">4. Finance & Payment Terms:</span>
+                  <p class="text-gray-300 mt-1">"What payment mechanism does your finance team require (LC at sight, CAD, or Advance)?"</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8. Sales Scripts to Close Your First 5 Paying Exporters -->
+          <article id="psec-scripts" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/30">8</span>
+              <h3 class="text-base font-bold text-white tracking-tight">Sales Scripts to Close Your First 5 Paying Exporters</h3>
+            </div>
+
+            <!-- Pitch Script Box -->
+            <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-emerald-400 text-xs">Direct WhatsApp Pitch to Exporter Managing Directors</span>
+                <button onclick="copyWhatsAppPitch()" class="text-[11px] text-gray-400 hover:text-white underline">Copy Script</button>
+              </div>
+              <div id="whatsapp-pitch-box" class="p-3.5 rounded-lg bg-gray-950 font-mono text-[11px] text-gray-200 leading-relaxed whitespace-pre-wrap">Namaste [Exporter Name] ji,
+
+I noticed [Exporter Company] is one of the leading manufacturers of [Spices/Textiles/Flanges] in [City].
+
+Quick question: Are you currently exploring direct container orders with verified importers in the US and Europe, without having to pay heavy commissions to local brokers or spend ₹10–15 Lakhs on foreign trade expos?
+
+We have built an AI-powered outreach engine that directly connects Indian exporters with procurement heads at verified US/EU importing companies.
+
+We recently identified 85 active buyers in the US who imported [Product] over the last 90 days. 
+
+Could I share a quick 2-minute video showing the exact buyer list and how we can book 4-5 direct discovery calls for your sales team this month?
+
+Best regards,
+[Your Name] & [Partner Name]
+EximFlow Partners
+[Your Phone Number]</div>
+            </div>
+
+            <!-- Overcoming Objections Table -->
+            <div class="overflow-x-auto rounded-xl border border-gray-800">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-gray-900 text-gray-400 uppercase font-semibold">
+                  <tr>
+                    <th class="p-3">Exporter Objection</th>
+                    <th class="p-3 text-cyan-400">Winning Response Script</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800/80 text-[11px]">
+                  <tr>
+                    <td class="p-3 font-bold text-white">"We already use IndiaMART / Alibaba"</td>
+                    <td class="p-3 text-gray-300">"IndiaMART and Alibaba only attract domestic price-shoppers and small retail inquiries. We source verified US Customs Bill of Lading records so you reach real 40ft container buyers directly at their corporate inboxes."</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">"We only get orders from Gulfood / Anuga"</td>
+                    <td class="p-3 text-gray-300">"Expos cost ₹12 Lakhs for 3 days of footfall once a year. Our engine runs 365 days a year across US and European supply chains for a fraction of a single expo booth cost."</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">"We already have an export marketing team"</td>
+                    <td class="p-3 text-gray-300">"That's perfect. We don't replace your export team; we feed them verified buyer appointments on their calendar so they spend time negotiating contracts instead of cold-calling dead leads."</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- 9. 30-Day Step-by-Step Launch Roadmap -->
+          <article id="psec-roadmap" class="playbook-section space-y-4">
+            <div class="flex items-center gap-2 border-b border-gray-800/80 pb-2">
+              <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs border border-cyan-500/30">9</span>
+              <h3 class="text-base font-bold text-white tracking-tight">30-Day Step-by-Step Execution Roadmap</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Week 1 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-cyan-400 text-xs">Week 1: Infrastructure & Data Foundation</span>
+                  <span class="text-[10px] font-bold text-emerald-400">COMPLETED ✓</span>
+                </div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>Repository initialized with zero-disk-bloat Apollo streaming engine.</li>
+                  <li>Multi-database sourcing (Customs trade records + Apollo stream + Instagram).</li>
+                  <li>Waterfall deliverability & MX verification pipeline active.</li>
+                  <li>Anti-AI cold trade sequence generator calibrated.</li>
+                </ul>
+              </div>
+
+              <!-- Week 2 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-blue-400 text-xs">Week 2: Warm-up & Pilot Client Acquisition</span>
+                  <span class="text-[10px] font-bold text-cyan-400">NEXT SPRINT</span>
+                </div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>Acquire 2 secondary domains (e.g. <code>geteximflow.com</code>).</li>
+                  <li>Configure SPF, DKIM 2048-bit, DMARC, and activate 21-day warmup.</li>
+                  <li>Pitch 20 local exporters via WhatsApp & LinkedIn using Script #8.</li>
+                  <li>Close 1–2 pilot clients at introductory rate (₹35,000/mo).</li>
+                </ul>
+              </div>
+
+              <!-- Week 3 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-indigo-400 text-xs">Week 3: First Client Campaign Execution</span>
+                  <span class="text-[10px] font-bold text-gray-400">IN QUEUE</span>
+                </div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>Extract ICP importer list for Client #1 using Customs + Apollo engine.</li>
+                  <li>Verify 100% of emails through waterfall filter (guarantee 0% bounce).</li>
+                  <li>Personalize 3-touch sequence and launch 35 emails/day per inbox.</li>
+                  <li>Monitor open rates (aim for &gt;50%) and positive replies.</li>
+                </ul>
+              </div>
+
+              <!-- Week 4 -->
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-purple-400 text-xs">Week 4: Booking Discovery Calls & Scaling</span>
+                  <span class="text-[10px] font-bold text-gray-400">SCALE</span>
+                </div>
+                <ul class="text-[11px] text-gray-300 space-y-1 list-disc list-inside">
+                  <li>Triage incoming buyer replies and book 2–4 verified international Zoom calls.</li>
+                  <li>Capture WhatsApp screenshot testimonials and container LOIs.</li>
+                  <li>Pitch 50 more exporters with proven case study proof.</li>
+                  <li>Scale to 5–10 monthly retainer clients (₹2,00,000+ monthly cashflow).</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+        </div>
       </div>
     </section>
   </main>
@@ -383,7 +1598,7 @@ Loading playbook documentation...
             <label class="block text-gray-400 mb-1">Certifications / Specs</label>
             <input type="text" id="modal-certs" value="BRC, FDA, USDA Organic" class="w-full bg-black/40 border border-gray-700 rounded-lg px-2.5 py-1 text-white text-xs">
           </div>
-          <input type="hidden" id="modal-client-name" value="Rajesh Patel">
+          <input type="hidden" id="modal-client-name" value="Aarav Sharma">
         </div>
 
         <div class="flex justify-end">
@@ -400,11 +1615,479 @@ Loading playbook documentation...
     </div>
   </div>
 
+  <!-- ============================================== -->
+  <!-- MODAL: HARVEY OFFER & ICP CONFIGURATION        -->
+  <!-- ============================================== -->
+  <div id="harvey-config-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-xl rounded-2xl border border-gray-800 shadow-2xl overflow-hidden flex flex-col">
+      <div class="px-6 py-4 bg-gray-900/90 border-b border-gray-800 flex items-center justify-between">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          Configure Harvey (What You Sell & ICP)
+        </h3>
+        <button onclick="toggleHarveyConfigModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div>
+          <label class="block text-gray-400 mb-1 font-semibold">Your Business Name</label>
+          <input type="text" id="harvey-cfg-biz-name" class="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-gray-400 mb-1 font-semibold">What You Sell / Direct Offering</label>
+          <textarea id="harvey-cfg-offering" rows="2" class="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white"></textarea>
+        </div>
+        <div>
+          <label class="block text-gray-400 mb-1 font-semibold">Ideal Customer Profile (ICP) Description</label>
+          <textarea id="harvey-cfg-icp" rows="2" class="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-400 mb-1 font-semibold">Target Geographies</label>
+            <input type="text" id="harvey-cfg-geo" class="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white">
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1 font-semibold">Operating Mode</label>
+            <select id="harvey-cfg-mode" class="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white">
+              <option value="review_first">Review First (Staged in Outbox)</option>
+              <option value="autonomous">Full Autonomous (Direct Dispatch)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="toggleHarveyConfigModal()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg font-semibold">Cancel</button>
+          <button onclick="saveHarveyConfiguration()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold">Save Configuration</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: INTERACTIVE USER MANUAL & SYSTEM GUIDE   -->
+  <!-- ============================================== -->
+  <div id="user-manual-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="glass-panel w-full max-w-5xl rounded-2xl border border-gray-800 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] bg-[#0d1322]">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gray-900/90 border-b border-gray-800 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-bold text-white shadow-md shadow-blue-500/20">
+            📖
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white text-base tracking-tight">EximFlow AI — Master Operating Manual & Architecture</h3>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">Official Documentation</span>
+            </div>
+            <p class="text-xs text-gray-400">Step-by-step operating guidelines for 99M data streaming, Instagram parser, Harvey AI SDR, and zero-AI client acquisition.</p>
+          </div>
+        </div>
+        <button onclick="closeUserManualModal()" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body with Sub-Tabs Navigation -->
+      <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <div class="w-full md:w-64 bg-gray-950/60 border-b md:border-b-0 md:border-r border-gray-800/80 p-3 space-y-1 flex-shrink-0 overflow-y-auto">
+          <div class="text-[10px] uppercase font-bold text-gray-500 px-3 py-1.5 tracking-wider">Manual Modules</div>
+          <button onclick="switchManualSubTab('overview')" data-mantab="overview" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition bg-blue-600/20 text-blue-300 border border-blue-500/30">
+            <span>🚀</span> 01. Platform Architecture
+          </button>
+          <button onclick="switchManualSubTab('apollo')" data-mantab="apollo" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>📁</span> 02. 99M Apollo & Customs
+          </button>
+          <button onclick="switchManualSubTab('social')" data-mantab="social" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>📸</span> 03. Instagram (parser.im)
+          </button>
+          <button onclick="switchManualSubTab('harvey')" data-mantab="harvey" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>⚡</span> 04. Harvey AI SDR (5 Agents)
+          </button>
+          <button onclick="switchManualSubTab('antiai')" data-mantab="antiai" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>🛡️</span> 05. 10 Anti-AI Commandments
+          </button>
+          <button onclick="switchManualSubTab('retainers')" data-mantab="retainers" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>💼</span> 06. Retainers & Smartlead
+          </button>
+          <button onclick="switchManualSubTab('deliverability')" data-mantab="deliverability" class="manual-subtab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 flex items-center gap-2 transition">
+            <span>📬</span> 07. DNS & 21-Day Warmup
+          </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 p-6 overflow-y-auto space-y-6 text-xs text-gray-300 leading-relaxed">
+
+          <!-- SUB-TAB 1: ARCHITECTURE OVERVIEW -->
+          <div id="mantab-content-overview" class="manual-content-panel space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">Platform Architecture & Operational Pipeline</h4>
+                <p class="text-gray-400 text-[11px]">How the four engines connect to create an autonomous B2B client acquisition machine.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('discovery')" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold text-xs transition">
+                Try Lead Discovery →
+              </button>
+            </div>
+
+            <!-- Pipeline Diagram -->
+            <div class="p-4 rounded-xl bg-gray-900/90 border border-gray-800 font-mono text-[11px] space-y-2">
+              <div class="text-cyan-400 font-bold">DATA INGESTION (99.3M Records + Customs + parser.im)</div>
+              <div class="text-gray-400 pl-4">└── Apollo Streamer (Zero-Disk Zip) + US Customs Bill of Lading + Instagram Reels</div>
+              <div class="text-cyan-400 font-bold mt-2">HARVEY AUTONOMOUS SDR ENGINE</div>
+              <div class="text-gray-400 pl-4">├── 1. Ingestion Agent (Deduplicates & buffers prospects)</div>
+              <div class="text-gray-400 pl-4">├── 2. ICP Scorer (Rates lead quality 0-100 on import size & seniority)</div>
+              <div class="text-gray-400 pl-4">├── 3. Customs & Social Researcher (Fetches shipment history & bio links)</div>
+              <div class="text-gray-400 pl-4">├── 4. Anti-AI Copywriter (Drafts sub-75 word human trade sequences)</div>
+              <div class="text-gray-400 pl-4">└── 5. Dispatcher & Pacer (Maintains 35/day deliverability safety)</div>
+              <div class="text-cyan-400 font-bold mt-2">DELIVERABILITY & CONVERSION</div>
+              <div class="text-gray-400 pl-4">└── MX/SMTP Waterfall Verification ➔ Smartlead/Instantly CSV Export ➔ $3.5K/mo Retainer</div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs flex items-center gap-1.5">
+                  <span class="text-emerald-400">✓</span> The 48-Hour Quickstart Plan
+                </h5>
+                <ol class="list-decimal list-inside space-y-1 text-gray-300 text-[11px]">
+                  <li>Go to <strong>Lead Discovery</strong> and choose your target commodity (e.g. <em>"Spices"</em> or <em>"Rice"</em>).</li>
+                  <li>Click <em>"Batch Verify CRM Leads"</em> to clean invalid emails with real-time MX checks.</li>
+                  <li>In <strong>Harvey AI SDR</strong>, review staged emails and hit <em>"Approve & Enqueue"</em>.</li>
+                  <li>Export to Smartlead CSV or paste directly into your warmed-up inbox.</li>
+                </ol>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs flex items-center gap-1.5">
+                  <span class="text-blue-400">★</span> Why Zero-Disk Mode Matters
+                </h5>
+                <p class="text-[11px] text-gray-400">
+                  Standard software unpacks the 19.6 GB Apollo archive into 60+ GB of raw CSV files, destroying disk space and SSD lifespan. EximFlow's <code class="text-blue-300 font-mono">ApolloStreamer</code> reads records dynamically inside compressed zip blocks with zero disk footprint.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 2: APOLLO & CUSTOMS -->
+          <div id="mantab-content-apollo" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">99.3M Apollo Database & US Customs Manifests</h4>
+                <p class="text-gray-400 text-[11px]">Querying global buyers with container volume and customs proof.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('discovery')" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold text-xs transition">
+                Open Discovery Engine →
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">US Customs AMS (Automated Manifest System) Data</h5>
+                <p class="text-[11px] text-gray-300">
+                  Cold emails sent to commodity buyers fail 98% of the time because they lack proof of relevance. EximFlow injects genuine <strong>US Customs Bill of Lading</strong> manifests into your search. Each record displays:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li><strong class="text-white">Bill of Lading Number:</strong> Verified shipping document identifier.</li>
+                  <li><strong class="text-white">Arrival Port:</strong> Exact US port (e.g. <em>Port of New York/New Jersey, Long Beach CA, Houston TX</em>).</li>
+                  <li><strong class="text-white">Container Volume (TEU):</strong> 20ft/40ft container counts showing actual purchasing power.</li>
+                  <li><strong class="text-white">Supplier Name:</strong> Previous overseas supplier (giving you instant competitive intelligence).</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">How to Page Through Millions of Apollo Records</h5>
+                <p class="text-[11px] text-gray-300">
+                  In the <strong>Lead Discovery</strong> tab:
+                </p>
+                <ol class="list-decimal list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li>Select <em>"Apollo Database (99M Zero-Disk Stream)"</em> in the Database dropdown.</li>
+                  <li>Choose your batch size (e.g. 100 or 250 leads per query).</li>
+                  <li>Click <em>"Search"</em> to stream the first batch.</li>
+                  <li>Scroll to the bottom and click <strong>"Stream Next Batch from 99M Database"</strong> to page infinitely without lag.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 3: INSTAGRAM PARSER -->
+          <div id="mantab-content-social" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">Instagram B2B Parser & Reel Scraping (parser.im)</h4>
+                <p class="text-gray-400 text-[11px]">Extract public WhatsApp numbers, corporate emails, and reel buyer leads.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('social')" class="px-3 py-1 bg-pink-600 hover:bg-pink-500 text-white rounded-lg font-semibold text-xs transition">
+                Open Social Parser →
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-pink-300 text-xs">Why parser.im Outperforms Traditional Scrapers</h5>
+                <p class="text-[11px] text-gray-300">
+                  Traditional web scraping uses headless browsers with fake user accounts that get IP-banned within 30 minutes. The <code class="text-pink-300 font-mono">parser.im</code> methodology targets <strong>Public Business Profiles</strong>:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li>Business accounts publicly display phone numbers and emails so buyers can contact them.</li>
+                  <li>EximFlow runs regex parsing across bios to isolate international WhatsApp numbers (+1, +44, +971, +91) and email addresses.</li>
+                  <li>Reel comment scrapers identify users asking for pricing and catalog links (highest possible buying intent).</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">How to Import parser.im CSV Exports</h5>
+                <ol class="list-decimal list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li>Export a profile or follower list from <a href="https://parser.im/" target="_blank" class="text-pink-400 underline">parser.im</a> as a CSV.</li>
+                  <li>Open the <strong>Social Parser</strong> tab and paste the CSV into the <em>"Direct parser.im CSV Importer"</em> textarea.</li>
+                  <li>Click <em>"Parse & Import CSV to CRM"</em>. The system automatically normalizes usernames, cleans phone numbers, and maps them to your sales pipeline.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 4: HARVEY SDR -->
+          <div id="mantab-content-harvey" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">Harvey: Autonomous AI SDR (5-Agent Architecture)</h4>
+                <p class="text-gray-400 text-[11px]">Inspired by ethanplusai/harvey — fully local AI SDR for lead qualification and outreach.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('harvey')" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold text-xs transition">
+                Launch Harvey SDR →
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                  <div class="text-xs font-bold text-cyan-400">Agent 1: Ingestion Manager</div>
+                  <p class="text-[11px] text-gray-400 mt-1">Deduplicates incoming leads from Apollo, Customs manifests, and Instagram. Enforces 35/day safety limits.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                  <div class="text-xs font-bold text-cyan-400">Agent 2: ICP Matcher & Scorer</div>
+                  <p class="text-[11px] text-gray-400 mt-1">Scores each lead from 0 to 100 based on job title (Procurement, VP, Buyer), company revenue, and commodity fit.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                  <div class="text-xs font-bold text-cyan-400">Agent 3: Trade & Bio Researcher</div>
+                  <p class="text-[11px] text-gray-400 mt-1">Extracts past container TEUs, import ports, bio links, and business certifications for personalization.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                  <div class="text-xs font-bold text-cyan-400">Agent 4: Anti-AI Trade Copywriter</div>
+                  <p class="text-[11px] text-gray-400 mt-1">Drafts 3-touch trade sequences following the 10 Anti-AI Commandments (sub-75 words, real manifest references).</p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-cyan-950/20 border border-cyan-800/40 space-y-2">
+                <h5 class="font-bold text-cyan-300 text-xs">Review First vs Full Autonomous Mode</h5>
+                <p class="text-[11px] text-gray-300">
+                  By default, Harvey operates in <strong>Review First (Safe)</strong> mode: all drafted emails are held in the Staged Outbox. You can review the copy, inspect the recipient, and click <em>"Approve & Enqueue"</em> with 1 click. When you switch to <strong>Full Autonomous</strong>, leads scoring &ge; 75 are dispatched automatically at randomized intervals.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 5: 10 ANTI-AI COMMANDMENTS -->
+          <div id="mantab-content-antiai" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">The 10 Anti-AI Humanized Copywriting Commandments</h4>
+                <p class="text-gray-400 text-[11px]">Strict rules to avoid spam filters and sound like an authentic trade professional.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('templates')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold text-xs transition">
+                View Humanized Vault →
+              </button>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-gray-800">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-gray-900 text-gray-400 uppercase font-semibold">
+                  <tr>
+                    <th class="p-3">Rule</th>
+                    <th class="p-3 text-red-400">❌ AI Cliché (Instant Spam)</th>
+                    <th class="p-3 text-emerald-400">✓ Humanized EximFlow Rule</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800/80 text-[11px]">
+                  <tr>
+                    <td class="p-3 font-bold text-white">1. Greeting</td>
+                    <td class="p-3 text-red-300">"I hope this email finds you well"</td>
+                    <td class="p-3 text-emerald-300">"Hi [First Name]," — straight to the point</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">2. Subject Line</td>
+                    <td class="p-3 text-red-300">"Synergistic Partnership Opportunities for 2026"</td>
+                    <td class="p-3 text-emerald-300">"rice container to newark?" or "quick question"</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">3. Proof Hook</td>
+                    <td class="p-3 text-red-300">"We are a leading provider of innovative solutions..."</td>
+                    <td class="p-3 text-emerald-300">"Saw your 40ft TEU shipment at Port Newark last month"</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">4. Length</td>
+                    <td class="p-3 text-red-300">200-300 word essays explaining your entire company history</td>
+                    <td class="p-3 text-emerald-300">Sub-75 words on touch 1; sub-30 words on touch 2</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">5. Commercial Value</td>
+                    <td class="p-3 text-red-300">Vague promises of "cutting-edge value"</td>
+                    <td class="p-3 text-emerald-300">Concrete FOB/CIF price range or lab COA specs</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">6. Call to Action</td>
+                    <td class="p-3 text-red-300">"Book a 30-minute demo on my Calendly link"</td>
+                    <td class="p-3 text-emerald-300">"Mind if I send the spec sheet?" (5 words, 0 pressure)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">7. Format</td>
+                    <td class="p-3 text-red-300">HTML email with company logos, headers, and banners</td>
+                    <td class="p-3 text-emerald-300">100% Plain text email (looks typed on an iPhone)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-white">8. Follow-up</td>
+                    <td class="p-3 text-red-300">Aggressive 7-sequence harassment</td>
+                    <td class="p-3 text-emerald-300">Maximum 3 touches spaced 3-4 days apart</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 6: RETAINERS & PROPOSALS -->
+          <div id="mantab-content-retainers" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">Retainer Pricing, Agency Proposals & Smartlead Export</h4>
+                <p class="text-gray-400 text-[11px]">How to package and sell B2B outbound services for $1,500 - $6,500/mo.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('execution')" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold text-xs transition">
+                Open Proposal Generator →
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-1">
+                  <span class="text-[10px] uppercase font-bold text-blue-400">Starter Tier</span>
+                  <div class="text-lg font-black text-white">$1,500 / mo</div>
+                  <p class="text-[11px] text-gray-400">300 Verified Buyer Leads, 1 Domain, 2 Inboxes, 500 emails/mo.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-blue-950/20 border border-blue-500/30 space-y-1">
+                  <span class="text-[10px] uppercase font-bold text-cyan-400">Growth Tier (Best)</span>
+                  <div class="text-lg font-black text-white">$3,500 / mo</div>
+                  <p class="text-[11px] text-gray-400">1,000 Verified Leads, 2 Domains, 5 Inboxes, Harvey SDR, 2,000 emails/mo.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-1">
+                  <span class="text-[10px] uppercase font-bold text-purple-400">Enterprise Tier</span>
+                  <div class="text-lg font-black text-white">$6,500 / mo</div>
+                  <p class="text-[11px] text-gray-400">2,500 Verified Leads, 5 Domains, 12 Inboxes, Full Autonomous Harvey + CRM.</p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">Smartlead & Instantly Export Workflow</h5>
+                <ol class="list-decimal list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li>In <strong>Sales Pipeline</strong>, verify all leads using the <em>"Batch Verify CRM Leads"</em> button.</li>
+                  <li>Click <em>"Export to Smartlead / Instantly"</em> to save a pre-formatted CSV.</li>
+                  <li>Upload the CSV to your Smartlead campaign. Custom fields (<code class="text-cyan-300 font-mono text-[10px]">{{company}}</code>, <code class="text-cyan-300 font-mono text-[10px]">{{customs_port}}</code>) are auto-mapped.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 7: DELIVERABILITY & DNS -->
+          <div id="mantab-content-deliverability" class="manual-content-panel hidden space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div>
+                <h4 class="text-base font-bold text-white">Email Deliverability, DNS Records & 21-Day Warmup</h4>
+                <p class="text-gray-400 text-[11px]">Bulletproof inbox placement guidelines complying with Google & Yahoo 2026 standards.</p>
+              </div>
+              <button onclick="closeUserManualModal(); switchTab('deliverability')" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold text-xs transition">
+                Open Deliverability Hub →
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">The Holy Trinity of DNS Authentication</h5>
+                <ul class="list-disc list-inside space-y-1 text-gray-400 text-[11px]">
+                  <li><strong class="text-white">SPF (Sender Policy Framework):</strong> Defines authorized IP servers allowed to send mail on behalf of your secondary domain.</li>
+                  <li><strong class="text-white">DKIM (DomainKeys Identified Mail):</strong> 2048-bit cryptographic signature proving the email was not tampered with in transit.</li>
+                  <li><strong class="text-white">DMARC:</strong> Strict policy instruction (<code class="text-cyan-300 font-mono text-[10px]">p=quarantine</code> or <code class="text-cyan-300 font-mono text-[10px]">p=reject</code>) telling receiving mailboxes how to handle spoofed messages.</li>
+                  <li><strong class="text-white">Custom Tracking Domain:</strong> A CNAME mapping (e.g. <code>track.yourdomain.com</code>) to replace generic third-party tracking links with your own SSL-secured domain.</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-2">
+                <h5 class="font-bold text-white text-xs">21-Day Mailbox Ramp-Up Schedule</h5>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-[11px] pt-1">
+                  <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                    <div class="font-bold text-emerald-400">Week 1 (Days 1-7)</div>
+                    <div class="text-gray-300 mt-1">Warmup Pool only: 5 emails/day</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                    <div class="font-bold text-blue-400">Week 2 (Days 8-14)</div>
+                    <div class="text-gray-300 mt-1">Warmup + 10 live outreach / day</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                    <div class="font-bold text-indigo-400">Week 3 (Days 15-21)</div>
+                    <div class="text-gray-300 mt-1">Warmup + 25 live outreach / day</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-gray-950 border border-gray-800">
+                    <div class="font-bold text-purple-400">Day 22+ (Cruising)</div>
+                    <div class="text-gray-300 mt-1">Max 35-40 live / day / inbox</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 bg-gray-900/90 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>EximFlow AI runs 100% locally with zero cloud subscription fees.</span>
+        </div>
+        <button onclick="closeUserManualModal()" class="px-4 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-semibold transition">
+          Close Manual
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- FLOATING INTERACTIVE TOUR CONTROLLER WIDGET    -->
+  <!-- ============================================== -->
+  <div id="tour-floating-guide" class="fixed bottom-6 right-6 z-50 w-80 sm:w-96 glass-panel rounded-2xl border border-cyan-500/40 bg-gray-900/95 shadow-2xl p-4 hidden text-xs transition-all duration-300">
+    <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="font-bold text-white text-xs">EximFlow Interactive Tour</span>
+      </div>
+      <span id="tour-step-counter" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">Step 1 of 4</span>
+    </div>
+    <div id="tour-step-content" class="text-gray-300 text-[11px] space-y-1.5 leading-relaxed">
+      <!-- Injected via JS -->
+    </div>
+    <div class="flex items-center justify-between pt-3 mt-3 border-t border-gray-800">
+      <button onclick="endInteractiveTour()" class="text-gray-400 hover:text-white text-[11px]">Skip Tour</button>
+      <div class="flex items-center gap-1.5">
+        <button id="tour-btn-prev" onclick="tourPrevStep()" class="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-semibold hidden">Back</button>
+        <button id="tour-btn-next" onclick="tourNextStep()" class="px-3 py-1 rounded bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-[11px] font-bold shadow">Next Step →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="border-t border-gray-800/80 py-4 px-6 text-center text-xs text-gray-500">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>EximFlow AI — Master Startup Platform & Execution Engine</p>
-      <p class="font-mono text-[11px] text-gray-400">Zero-Disk Apollo Streaming • Customs Trade AMS • Smartlead Ready</p>
+      <p>EximFlow AI — Master Startup Platform & Autonomous Execution Engine</p>
+      <p class="font-mono text-[11px] text-gray-400">Zero-Disk Apollo Streaming • Customs Trade AMS • Instagram Parser • Harvey AI</p>
     </div>
   </footer>
 

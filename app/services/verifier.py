@@ -34,6 +34,7 @@ class WaterfallEmailVerifier:
     def verify(email: str) -> Dict[str, Any]:
         email = email.strip().lower()
         checks = {
+            "email": email,
             "valid_syntax": False,
             "is_disposable": False,
             "is_free_provider": False,
@@ -90,7 +91,7 @@ class WaterfallEmailVerifier:
         else:
             score -= 10
         if checks["is_role_account"]:
-            score -= 15  # Generic info@ or sales@ have lower response rates
+            score -= 30  # Generic info@ or sales@ have lower response rates
 
         checks["score"] = min(max(score, 0), 100)
 

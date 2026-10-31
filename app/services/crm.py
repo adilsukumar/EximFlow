@@ -105,6 +105,41 @@ class CRMService:
                 return True
         return False
 
+    def delete_lead(self, lead_id: str) -> bool:
+        initial_len = len(self._leads)
+        self._leads = [l for l in self._leads if l["id"] != lead_id]
+        return len(self._leads) < initial_len
+
+    def batch_verify_leads(self, verifier_cls) -> Dict[str, Any]:
+        """
+        Runs waterfall verification across all leads currently in the CRM pipeline.
+        Updates verification score and flags unsafe records.
+        """
+        safe_count = 0
+        risky_count = 0
+        do_not_send_count = 0
+
+        for lead in self._leads:
+            email = lead.get("email", "")
+            if email:
+                v_res = verifier_cls.verify(email)
+                lead["verify_status"] = v_res.get("status")
+                lead["deliverability_score"] = v_res.get("score")
+                lead["verify_reason"] = v_res.get("reason")
+                if v_res.get("status") == "SAFE_TO_SEND":
+                    safe_count += 1
+                elif v_res.get("status") == "ACCEPTABLE_RISKY":
+                    risky_count += 1
+                else:
+                    do_not_send_count += 1
+
+        return {
+            "total_verified": len(self._leads),
+            "safe_to_send": safe_count,
+            "risky": risky_count,
+            "do_not_send": do_not_send_count
+        }
+
     def classify_email_reply(self, reply_text: str) -> Dict[str, Any]:
         """
         AI Reply Triage Engine:
@@ -189,3 +224,4 @@ class CRMService:
             })
 
         return output.getvalue()
+

@@ -12,7 +12,7 @@ class StartupICPEngine:
                 "name": "Alex Mercer",
                 "first_name": "Alex",
                 "last_name": "Mercer",
-                "title": "Chief Technology Officer",
+                "title": "Chief Technology Officer (CTO)",
                 "company": "Kinetix Cloud Systems",
                 "email": "alex.mercer@kinetixcloud.io",
                 "phone": "+1 (415) 555-0193",
@@ -25,7 +25,7 @@ class StartupICPEngine:
                 "headcount": "45 employees",
                 "funding_stage": "Series A ($6.2M)",
                 "tech_stack": "AWS, Kubernetes, Next.js, FastAPI, PostgreSQL",
-                "icp_tags": "Cloud Infrastructure, High Growth, Tech Leader",
+                "icp_tags": "CTO, Cloud Infrastructure, High Growth, Tech Leader",
                 "data_source": "LinkedIn Sales Nav / TechCrunch",
                 "verified_badge": True
             },
@@ -47,7 +47,7 @@ class StartupICPEngine:
                 "headcount": "80 employees",
                 "funding_stage": "Series B ($18M)",
                 "tech_stack": "GCP, Golang, React, Snowflake, Kafka",
-                "icp_tags": "Fintech, Cross-border Payments, Compliance",
+                "icp_tags": "VP Eng, Fintech, Cross-border Payments, Compliance",
                 "data_source": "LinkedIn Sales Nav / Crunchbase",
                 "verified_badge": True
             },
@@ -69,7 +69,7 @@ class StartupICPEngine:
                 "headcount": "32 employees",
                 "funding_stage": "Seed ($3.0M)",
                 "tech_stack": "Python, React, AWS, Segment, HubSpot",
-                "icp_tags": "Logistics AI, Freight Automation, B2B Outbound",
+                "icp_tags": "CRO, VP Sales, Logistics AI, Freight Automation, B2B Outbound",
                 "data_source": "LinkedIn Sales Nav / ProductHunt",
                 "verified_badge": True
             },
@@ -78,7 +78,7 @@ class StartupICPEngine:
                 "name": "Sarah O'Connor",
                 "first_name": "Sarah",
                 "last_name": "O'Connor",
-                "title": "Chief Executive Officer & Founder",
+                "title": "Chief Executive Officer & Founder (CEO)",
                 "company": "BioTrace Diagnostics",
                 "email": "soconnor@biotracedx.com",
                 "phone": "+1 (617) 555-3421",
@@ -91,7 +91,7 @@ class StartupICPEngine:
                 "headcount": "24 employees",
                 "funding_stage": "Seed ($2.5M)",
                 "tech_stack": "AWS HIPAA Cloud, Python, Next.js",
-                "icp_tags": "HealthTech, Founder, Enterprise Buyer",
+                "icp_tags": "CEO, Founder, HealthTech, Enterprise Buyer",
                 "data_source": "LinkedIn Sales Nav / AngelList",
                 "verified_badge": True
             }
@@ -102,21 +102,41 @@ class StartupICPEngine:
         query: str = "",
         role: str = "",
         industry: str = "",
+        country: str = "",
         limit: int = 25
     ) -> List[Dict[str, Any]]:
         results = []
         q = query.lower().strip()
         r = role.lower().strip()
         ind = industry.lower().strip()
+        c = country.lower().strip()
+
+        # Common search expansions
+        role_synonyms = {
+            "cto": ["chief technology officer", "cto", "head of engineering"],
+            "ceo": ["chief executive officer", "ceo", "founder"],
+            "cpo": ["chief procurement officer", "chief product officer", "cpo"],
+            "cro": ["chief revenue officer", "vp of revenue", "cro", "vp sales"],
+            "vp": ["vice president", "vp"],
+        }
 
         for rec in self._tech_records:
+            if c and c not in rec["country"].lower():
+                continue
             if r and r not in rec["title"].lower():
                 continue
-            if ind and ind not in rec["industry"].lower():
+            if ind and (ind not in rec["industry"].lower() and ind not in rec.get("icp_tags", "").lower()):
                 continue
             if q:
-                matchable = f"{rec['company']} {rec['name']} {rec['title']} {rec['tech_stack']} {rec['industry']}".lower()
-                if q not in matchable:
+                matchable = f"{rec['company']} {rec['name']} {rec['title']} {rec['tech_stack']} {rec['industry']} {rec.get('icp_tags', '')} {rec.get('funding_stage', '')}".lower()
+                
+                # Check direct or synonym match
+                direct_match = q in matchable
+                synonym_match = False
+                if q in role_synonyms:
+                    synonym_match = any(syn in matchable for syn in role_synonyms[q])
+                
+                if not direct_match and not synonym_match:
                     continue
 
             results.append(rec)
@@ -124,3 +144,4 @@ class StartupICPEngine:
                 break
 
         return results
+

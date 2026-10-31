@@ -44,3 +44,10 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+# Vercel & Scratch
+.vercel/
+scratch/
+*.pdf
+
+

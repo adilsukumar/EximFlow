@@ -12,7 +12,7 @@ HAS_APOLLO_ZIP = APOLLO_ZIP_PATH.exists()
 APP_NAME = "EximFlow AI"
 APP_DESCRIPTION = "Autonomous Lead Gen & Cold Outreach Engine for B2B Exporters & Startups"
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
-PORT = int(os.getenv("PORT", "8000"))
+PORT = int(os.getenv("PORT", "9090"))
 
 # Optional AI API Keys (if provided in environment)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -24,3 +24,4 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 MAX_COLD_EMAILS_PER_INBOX_PER_DAY = 35
 WARMUP_DAYS_REQUIRED = 21
 TARGET_BOUNCE_RATE_LIMIT = 0.02  # 2%
+

@@ -102,8 +102,11 @@ class DeliverabilityService:
             "target_monthly_emails": target_monthly_emails,
             "daily_emails_capacity": inboxes_needed * 30,
             "required_secondary_domains": domains_needed,
+            "domains_needed": domains_needed,
             "required_mailboxes": inboxes_needed,
+            "inboxes_needed": inboxes_needed,
             "max_emails_per_inbox_daily": 30,
             "estimated_infra_cost_inr": est_monthly_cost,
             "safety_rating": "100% Google/Yahoo compliant (Spam rate < 0.05%)"
         }
+
