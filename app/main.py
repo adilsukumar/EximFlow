@@ -104,6 +104,8 @@ class ApproveOutboxRequest(BaseModel):
 # ----------------- Web UI -----------------
 @app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
+@app.get("/api/index", response_class=HTMLResponse)
 @app.get("/app", response_class=HTMLResponse)
 @app.get("/home", response_class=HTMLResponse)
 async def home_page(request: Request):
@@ -121,7 +123,8 @@ async def home_page(request: Request):
 @app.exception_handler(404)
 async def custom_404_handler(request: Request, exc):
     accept = request.headers.get("accept", "")
-    if "text/html" in accept:
+    # Only redirect HTML requests if not already at a known root path (prevents infinite redirect loops on Vercel)
+    if "text/html" in accept and request.url.path not in ("/", "/index.html", "/api/index.py", "/api/index", "/app", "/home"):
         return RedirectResponse(url="/")
     return JSONResponse(
         status_code=404,
