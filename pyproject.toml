@@ -1,7 +1,3 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "eximflow"
 version = "0.1.0"
@@ -18,3 +14,14 @@ dependencies = [
     "reportlab>=4.2.0"
 ]
 requires-python = ">=3.12"
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "api*"]
