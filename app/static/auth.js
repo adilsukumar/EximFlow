@@ -51,3 +51,4 @@ function authFetch(path, opts) {
   o.referrerPolicy = 'same-origin';
   return fetch(url.href, o);
 }
+
