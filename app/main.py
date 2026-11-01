@@ -25,12 +25,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 app = FastAPI(
     title=APP_NAME,
     description=APP_DESCRIPTION,
-    version="1.0.0"
+    version="1.0.0",
+    redirect_slashes=False
 )
 
-# Mount static files and templates
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "app" / "static")), name="static")
-templates = Jinja2Templates(directory=str(BASE_DIR / "app" / "templates"))
+@app.middleware("http")
+async def vercel_matched_path_middleware(request: Request, call_next):
+    matched_path = request.headers.get("x-matched-path")
+    if matched_path and request.scope.get("path") in ("/api/index", "/api/index.py"):
+        request.scope["path"] = matched_path
+    return await call_next(request)
+
+# Mount static files and templates safely
+static_dir = BASE_DIR / "app" / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+templates_dir = BASE_DIR / "app" / "templates"
+templates = Jinja2Templates(directory=str(templates_dir))
 
 # Initialize engines
 apollo_engine = ApolloStreamEngine()
