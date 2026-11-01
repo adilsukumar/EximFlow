@@ -1,7 +1,16 @@
-# Large local database files
+# Large local datasets
 Entire Apollo Database*
 *.zip
 *.tar
 *.gz
 *.7z
 *.rar
+
+# Development & scratch
+scratch/
+.git
+.github
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
