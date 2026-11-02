@@ -17,7 +17,8 @@ class HarveyAutonomousSDRAgent:
     def __init__(self):
         self.agent_name = "Harvey"
         self.version = "2.2.0-autonomous-e2e"
-        self.is_running = True
+        # This implementation drafts locally; it has no live sender or scheduler.
+        self.is_running = False
         self.mode = "review_first"  # "autonomous" or "review_first"
         
         # User Business & ICP Configuration
@@ -206,7 +207,7 @@ class HarveyAutonomousSDRAgent:
 
             # Stage 4: Waterfall Verification
             v_check = verifier_engine.verify(email)
-            if v_check["status"] == "INVALID":
+            if v_check["status"] == "DO_NOT_SEND":
                 self.log_event("VERIFIER", f"Skipped {email} - Failed bounce check (Score: {v_check['score']}/100)", "rose")
                 continue
 
@@ -227,8 +228,8 @@ class HarveyAutonomousSDRAgent:
 
             # Stage 5: Outbox Staging
             outbox_id = f"harvey_out_{len(self._outbox) + 1:02d}"
-            status = "APPROVED" if self.mode == "autonomous" else "STAGED_REVIEW"
-            scheduled_desc = "Batched for 09:30 AM EST send window" if status == "APPROVED" else "Pending Review & Approval"
+            status = "STAGED_REVIEW"
+            scheduled_desc = "Draft only — review and export manually"
 
             staged_email = {
                 "id": outbox_id,
@@ -256,41 +257,35 @@ class HarveyAutonomousSDRAgent:
                 "company": company_name,
                 "country": lead.get("country", "United States"),
                 "product": product_target,
-                "stage": "outreached" if status == "APPROVED" else "verified",
+                "stage": "verified",
                 "notes": f"Autonomous scouted by Harvey ({lead.get('data_source', 'Manifest')}) — {annual_vol}"
             })
 
-        self.log_event("WRITER", f"Crafted {staged_count} ultra-concise cold emails referencing real container manifests.", "blue")
-        self.log_event("SENDER", f"Staged {staged_count} sequences into Outbox with strict 35/day deliverability pacing.", "indigo")
+        self.log_event("WRITER", f"Drafted {staged_count} sample emails for review.", "blue")
+        self.log_event("SENDER", "No email sender is connected; drafts were not sent.", "indigo")
 
         # Booked Discovery Call Highlight
         top_lead = candidate_leads[0] if candidate_leads else {}
-        booked_call = {
-            "name": top_lead.get("name", "Marcus Vance"),
-            "company": top_lead.get("company", "American Spice Imports LLC"),
-            "title": top_lead.get("title", "VP of Sourcing"),
-            "time": "Tomorrow at 03:30 PM EST",
-            "topic": f"Container CIF Contract & Sample Review ({query_kw})"
-        }
-        self.log_event("HANDLER", f"Discovery call coordinated with {booked_call['name']} ({booked_call['company']}) for {booked_call['time']}.", "emerald")
+        booked_call = None
+        self.log_event("HANDLER", "No calendar is connected; no meeting was booked.", "amber")
         self.log_event("ANALYST", f"Autonomous cycle finished in {round(time.time() - cycle_start, 2)}s. Pipeline updated.", "cyan")
 
         # Structured 6-Stage Telemetry
         stages = [
             {
                 "stage": 1,
-                "title": "Scout Real Buyers",
+                "title": "Scout Sample Records",
                 "icon": "🔍",
-                "summary": f"Scouted {len(candidate_leads)} verified buyers matching ICP across Customs AMS & Instagram Parser.",
-                "detail": f"Keywords matched: '{query_kw}'. Bill of lading manifests verified.",
+                "summary": f"Matched {len(candidate_leads)} bundled sample records to the current keywords.",
+                "detail": "No live customs, social, or Apollo source is connected.",
                 "status": "completed"
             },
             {
                 "stage": 2,
                 "title": "Manifest & Port Research",
                 "icon": "🏢",
-                "summary": "Extracted container TEUs, discharge ports (Newark, Houston, Rotterdam), and import frequency.",
-                "detail": "Analyzed physical customs records with active bill of lading numbers.",
+                "summary": "Used example manifest fields present in bundled sample records.",
+                "detail": "No live shipment records or bill of lading numbers were checked.",
                 "status": "completed"
             },
             {
@@ -305,8 +300,8 @@ class HarveyAutonomousSDRAgent:
                 "stage": 4,
                 "title": "Waterfall Deliverability Check",
                 "icon": "🛡️",
-                "summary": "Verified DNS MX, disposable domain filters, and mailbox SMTP handshakes.",
-                "detail": "0% bounce rate guarantee applied before outbox staging.",
+                "summary": "Checked syntax, disposable-domain list, and domain MX routing.",
+                "detail": "Mailbox existence and deliverability were not verified; no bounce guarantee is available.",
                 "status": "completed"
             },
             {
@@ -321,8 +316,8 @@ class HarveyAutonomousSDRAgent:
                 "stage": 6,
                 "title": "Objection Triage & Meeting Pipeline",
                 "icon": "💬",
-                "summary": f"Synchronized leads to CRM Pipeline and booked discovery Zoom slot.",
-                "detail": f"Discovery call with {booked_call['name']} ({booked_call['company']}) on schedule.",
+                "summary": "Sample leads were added to the local CRM pipeline.",
+                "detail": "No calendar integration is connected; no meeting was booked.",
                 "status": "completed"
             }
         ]
@@ -345,8 +340,8 @@ class HarveyAutonomousSDRAgent:
         for item in self._outbox:
             if item["id"] == email_id:
                 item["status"] = "APPROVED"
-                item["scheduled_at"] = "Queued for instant dispatch via Smartlead"
-                self.log_event("SENDER", f"Manually approved outreach to {item['recipient_email']}.", "emerald")
+                item["scheduled_at"] = "Approved for manual export — not sent"
+                self.log_event("SENDER", "Draft approved for manual export; no email was sent.", "emerald")
                 return True
         return False
 
@@ -355,6 +350,9 @@ class HarveyAutonomousSDRAgent:
             "agent_name": self.agent_name,
             "version": self.version,
             "is_running": self.is_running,
+            "simulation_mode": True,
+            "email_delivery_connected": False,
+            "calendar_connected": False,
             "mode": self.mode,
             "business_name": self.business_name,
             "business_offering": self.business_offering,

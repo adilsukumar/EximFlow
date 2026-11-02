@@ -128,7 +128,7 @@ class CRMService:
                 lead["verify_reason"] = v_res.get("reason")
                 if v_res.get("status") == "SAFE_TO_SEND":
                     safe_count += 1
-                elif v_res.get("status") == "ACCEPTABLE_RISKY":
+                elif v_res.get("status") in {"ACCEPTABLE_RISKY", "MX_PRESENT_UNVERIFIED"}:
                     risky_count += 1
                 else:
                     do_not_send_count += 1

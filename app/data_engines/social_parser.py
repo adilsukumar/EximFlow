@@ -217,18 +217,8 @@ class SocialParserEngine:
         target_input: str,
         niche: str = "Spices & Agro"
     ) -> List[Dict[str, Any]]:
-        """
-        Simulates parsing an active Instagram Reel, hashtag, or profile URL
-        (as seen in parser.im & viral lead generation reels).
-        """
-        target = target_input.strip()
-        
-        # If user provides a reel URL or username
-        if "instagram.com/reel/" in target or target.startswith("@") or "#" in target or target:
-            # Match niche or return all parsed leads
-            return self.search_social_leads(query=niche if niche != "all" else "", limit=10)
-        
-        return self._parsed_profiles[:5]
+        """Live Instagram parsing requires an external provider, which is not configured."""
+        return []
 
     def import_parser_im_csv(self, csv_content: str) -> Dict[str, Any]:
         """

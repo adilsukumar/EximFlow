@@ -443,124 +443,61 @@ async def system_status():
 @app.get("/api/search")
 
 async def search_leads(
-
     database: str = Query("all", description="Source: all, customs, social, apollo, startups"),
-
     query: str = Query("", description="Keyword search"),
-
-    product: str = Query("", description="Product or category (e.g. Spices, Rice, Flanges)"),
-
-    country: str = Query("", description="Country e.g. United States, Germany"),
-
+    product: str = Query("", description="Product or category"),
+    country: str = Query("", description="Country"),
     limit: int = Query(50, ge=1, le=500),
-
     offset: int = Query(0, ge=0)
-
 ):
+    if database not in {"all", "customs", "social", "startups", "apollo"}:
+        raise HTTPException(status_code=400, detail="Unknown database source")
 
-    results = []
+    # Bundled sources are finite samples. Page them consistently before continuing
+    # into the Apollo archive, when that archive is actually installed.
+    sample_sources = []
+    if database in ("customs", "all"):
+        sample_sources.extend(customs_engine.search_customs(
+            query=query, product=product, country=country, limit=500
+        ))
+    if database in ("social", "all"):
+        sample_sources.extend(social_engine.search_social_leads(
+            query=query or product, category=product, country=country, limit=500
+        ))
+    if database in ("startups", "all"):
+        sample_sources.extend(startup_engine.search_startups(
+            query=query, industry=product, country=country, limit=500
+        ))
 
-    
+    for sample in sample_sources:
+        sample["sample_data"] = True
+        sample["verified_badge"] = False
 
-    # 1. Customs Data (Best for Physical Goods Exporters)
-
-    try:
-
-        if database in ("customs", "all") and (offset == 0 or database == "customs"):
-
-            customs_leads = customs_engine.search_customs(query=query, product=product, country=country, limit=limit)
-
-            results.extend(customs_leads)
-
-    except Exception:
-
-        pass
-
-    # 2. Instagram & Social Media Parser (Inspired by parser.im)
-
-    try:
-
-        if database in ("social", "all") and (offset == 0 or database == "social"):
-
-            social_leads = social_engine.search_social_leads(
-
-                query=query or product,
-
-                category=product,
-
-                country=country,
-
-                limit=limit if database == "social" else 15
-
-            )
-
-            results.extend(social_leads)
-
-    except Exception:
-
-        pass
-
-    # 3. Startup ICP Engine
-
-    try:
-
-        if database in ("startups", "all") and (offset == 0 or database == "startups"):
-
-            startup_leads = startup_engine.search_startups(
-
-                query=query,
-
-                industry=product,
-
-                country=country,
-
-                limit=limit if database == "startups" else 15
-
-            )
-
-            results.extend(startup_leads)
-
-    except Exception:
-
-        pass
-
-    # 4. Apollo Streaming Engine (Zero disk extraction across 99,311,285 records)
-    try:
-        remaining = limit - len(results) if offset == 0 else limit
-        if database in ("apollo", "all") and remaining > 0:
-            apollo_leads = apollo_engine.search_leads(
-                query=query or product,
-                title=product,
-                country=country,
-                limit=remaining,
-                offset=offset
-            )
-            results.extend(apollo_leads)
-    except Exception as apollo_err:
-        pass
-
-    # Failsafe fallback: ensure leads are never empty on initial view
-
-    if not results and offset == 0:
-
-        results = customs_engine.get_all_customs()[:limit]
+    sample_total = len(sample_sources)
+    sample_page = sample_sources[offset:offset + limit] if database != "apollo" else []
+    apollo_offset = offset if database == "apollo" else max(0, offset - sample_total)
+    results = sample_page[:limit]
+    has_more = offset + len(results) < sample_total
+    if database in ("apollo", "all") and len(results) < limit:
+        apollo_limit = limit - len(results)
+        apollo_leads = apollo_engine.search_leads(
+            query=query or product, title=product, country=country,
+            limit=apollo_limit, offset=apollo_offset
+        )
+        results.extend(apollo_leads)
+        has_more = has_more or len(apollo_leads) == apollo_limit
 
     return {
-
-        "total": len(results),
-
+        "total": sample_total if database != "apollo" and (database != "all" or not apollo_engine.is_available) else None,
+        "sample_total": sample_total,
         "limit": limit,
-
         "offset": offset,
-
         "database_selected": database,
-
-        "estimated_total_database_records": 99311285,
-
-        "has_more": True,
-
+        "estimated_total_database_records": 99311285 if apollo_engine.is_available else None,
+        "apollo_available": apollo_engine.is_available,
+        "data_notice": "Bundled lead records are illustrative sample data; verify sources before outreach.",
+        "has_more": has_more,
         "leads": results[:limit]
-
     }
 
 @app.post("/api/verify")
@@ -588,8 +525,9 @@ async def verify_emails_batch(req: BatchVerifyRequest):
         "results": results,
 
         "safe_count": sum(1 for r in results if r["status"] == "SAFE_TO_SEND"),
+        "mx_present_unverified_count": sum(1 for r in results if r["status"] == "MX_PRESENT_UNVERIFIED"),
 
-        "risky_count": sum(1 for r in results if r["status"] == "ACCEPTABLE_RISKY"),
+        "risky_count": sum(1 for r in results if r["status"] in ("ACCEPTABLE_RISKY", "MX_PRESENT_UNVERIFIED")),
 
         "do_not_send_count": sum(1 for r in results if r["status"] == "DO_NOT_SEND")
 
@@ -886,8 +824,14 @@ async def search_social_parser(
 ):
 
     results = social_engine.search_social_leads(query=query, category=category, country=country, limit=limit)
-
-    return {"total": len(results), "profiles": results}
+    for profile in results:
+        profile["sample_data"] = True
+        profile["verified_badge"] = False
+        profile["data_source"] = "Illustrative social sample"
+    return {
+        "total": len(results), "profiles": results,
+        "data_notice": "Bundled examples only; live social parsing is not connected."
+    }
 
 @app.post("/api/parser/reel-parse")
 
@@ -897,7 +841,8 @@ async def parse_reel_or_target(req: ParseTargetRequest):
 
     return {
 
-        "status": "success",
+        "status": "unavailable",
+        "message": "Live social parsing is not connected. Import a CSV export to use real records.",
 
         "target": req.target,
 
@@ -1067,11 +1012,11 @@ async def get_live_status():
 
         "steps": [
 
-            {"name": "Scout", "state": "done", "detail": "Customs AMS & Apollo 99.3M stream indexed"},
+            {"name": "Scout", "state": "done", "detail": "Illustrative sample records loaded; no live data source is connected"},
 
             {"name": "Writer", "state": "done", "detail": "Personalized trade touches (<75 words) drafted"},
 
-            {"name": "Sender", "state": "running", "detail": "Pacing active at 35/day via secondary domains"},
+            {"name": "Sender", "state": "idle", "detail": "No mailbox provider connected; nothing is being sent"},
 
             {"name": "Handler", "state": "done", "detail": "Classifying buyer replies & scheduling calls"},
 

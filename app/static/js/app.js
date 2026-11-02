@@ -142,7 +142,7 @@ async function loadSystemStatus() {
 
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">
 
-            Cloud Mode: Customs & Startup Datasets Active
+            Sample data only • Apollo archive not installed
 
           </span>
 
@@ -234,7 +234,7 @@ async function searchLeads(appendMode = false) {
 
         <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-3"></div>
 
-        <p class="text-sm font-medium">Streaming verified leads from 99M Apollo archive & Customs manifests...</p>
+        <p class="text-sm font-medium">Searching the selected sources...</p>
 
       </div>
 
@@ -242,7 +242,7 @@ async function searchLeads(appendMode = false) {
 
   } else {
 
-    if (btnLoadMoreText) btnLoadMoreText.textContent = "Streaming next batch from 99M database...";
+    if (btnLoadMoreText) btnLoadMoreText.textContent = "Loading more results...";
 
     if (btnLoadMore) btnLoadMore.disabled = true;
 
@@ -267,6 +267,7 @@ async function searchLeads(appendMode = false) {
     });
 
     const res = await fetch(`/api/search?${params.toString()}`);
+    if (!res.ok) throw new Error(`Search failed (${res.status})`);
 
     let data;
 
@@ -295,9 +296,12 @@ async function searchLeads(appendMode = false) {
     }
 
     if (leadsCountEl) {
-
-      leadsCountEl.textContent = `Showing ${allDiscoveredLeads.length} Leads (of 99.3M+ in Database)`;
-
+      const totalLabel = data.total !== null && data.total !== undefined
+        ? `${data.total} sample records`
+        : data.estimated_total_database_records
+          ? `about ${Number(data.estimated_total_database_records).toLocaleString()} archive records`
+          : "Archive total unavailable";
+      leadsCountEl.textContent = `Showing ${allDiscoveredLeads.length} of ${totalLabel}`;
     }
 
     if (paginationStatusEl) {
@@ -306,13 +310,21 @@ async function searchLeads(appendMode = false) {
 
     }
 
+    if (btnLoadMore) {
+      btnLoadMore.hidden = !data.has_more;
+    }
+
     if (allDiscoveredLeads.length === 0) {
+
+      const emptyMessage = database === "apollo" && !data.apollo_available
+        ? "Apollo search is unavailable because the archive is not installed on this deployment."
+        : "No matching records were found in the available sample data.";
 
       leadsContainer.innerHTML = `
 
         <div class="col-span-full py-16 text-center bg-gray-900/40 rounded-xl border border-gray-800">
 
-          <p class="text-gray-400 text-sm">No matching leads found for these filters.</p>
+          <p class="text-gray-400 text-sm">${emptyMessage}</p>
 
           <button onclick="clearSearchFilters()" class="mt-3 px-4 py-1.5 text-xs bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-medium">Reset Filters</button>
 
@@ -348,7 +360,7 @@ async function searchLeads(appendMode = false) {
 
   } finally {
 
-    if (btnLoadMoreText) btnLoadMoreText.textContent = `Stream Next ${batchLimit} Leads from 99M Database`;
+    if (btnLoadMoreText) btnLoadMoreText.textContent = `Load ${batchLimit} more results`;
 
     if (btnLoadMore) btnLoadMore.disabled = false;
 
@@ -376,6 +388,10 @@ function renderLeadCard(lead) {
 
     sourceBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30">⚡ Apollo 99M Stream</span>`;
 
+  }
+
+  if (lead.sample_data) {
+    sourceBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/20 text-amber-200 border border-amber-500/30">Illustrative sample</span>`;
   }
 
   const extraMeta = isCustoms ? `
@@ -506,7 +522,11 @@ async function verifyEmailDirect(email, btnEl) {
 
     const result = await res.json();
 
-    if (result.status === "SAFE_TO_SEND") {
+    if (result.status === "MX_PRESENT_UNVERIFIED") {
+
+      btnEl.outerHTML = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">MX found · mailbox unchecked</span>`;
+
+    } else if (result.status === "SAFE_TO_SEND") {
 
       btnEl.outerHTML = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">✓ 95% Safe</span>`;
 
@@ -1032,7 +1052,7 @@ async function batchVerifyCRM(btnEl) {
 
     const data = await res.json();
 
-    alert(`Batch Verification Complete!\nTotal Verified: ${data.summary.total_verified}\nSafe to Send: ${data.summary.safe_to_send}\nRisky: ${data.summary.risky}\nDo Not Send: ${data.summary.do_not_send}`);
+    alert(`Domain checks complete.\nRecords checked: ${data.summary.total_verified}\nMailbox existence verified: 0 (not supported)\nDomains with MX: ${data.summary.risky}\nDo not send: ${data.summary.do_not_send}`);
 
     loadCRMLeads();
 
@@ -1944,7 +1964,7 @@ async function runBatchVerification() {
 
         <div class="flex items-center gap-3 text-xs">
 
-          <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">Safe to Send: ${data.safe_count}</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-bold">MX Present, Mailbox Unverified: ${data.mx_present_unverified_count || 0}</span>
 
           <span class="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 font-bold">Risky: ${data.risky_count}</span>
 
@@ -1982,7 +2002,7 @@ async function runBatchVerification() {
 
                   <td class="py-2 px-3">
 
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'SAFE_TO_SEND' ? 'bg-emerald-500/20 text-emerald-400' : (r.status === 'ACCEPTABLE_RISKY' ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400')}">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'MX_PRESENT_UNVERIFIED' || r.status === 'ACCEPTABLE_RISKY' ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400'}">
 
                       ${r.status}
 
@@ -2038,7 +2058,7 @@ async function loadInitialSocialLeads() {
 
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mb-3"></div>
 
-      <p class="text-sm font-medium">Parsing active Instagram B2B importer profiles...</p>
+      <p class="text-sm font-medium">Loading illustrative social profile examples...</p>
 
     </div>
 
@@ -2092,7 +2112,7 @@ async function runSocialTargetParse() {
 
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mb-3"></div>
 
-      <p class="text-sm font-medium">Scraping bios, emails & WhatsApp numbers from ${target}...</p>
+      <p class="text-sm font-medium">Checking parser availability for ${target}...</p>
 
     </div>
 
@@ -2113,6 +2133,12 @@ async function runSocialTargetParse() {
     const data = await res.json();
 
     cachedSocialLeads = data.leads || [];
+
+    if (data.status === "unavailable") {
+      container.innerHTML = `<p class="col-span-full text-center text-amber-300 text-xs py-8">${data.message}</p>`;
+      if (badge) badge.textContent = "Live parser unavailable";
+      return;
+    }
 
     renderSocialLeads(cachedSocialLeads);
 
@@ -2500,7 +2526,7 @@ function renderHarveyDashboard(data) {
 
     if (data.mode === "autonomous") {
 
-      modeBadge.innerHTML = `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">Mode: Autonomous Auto-Pilot</span>`;
+      modeBadge.innerHTML = `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">Simulation: Autonomous Drafting</span>`;
 
     } else {
 
@@ -2560,15 +2586,15 @@ function renderHarveyDashboard(data) {
 
         const statusBadge = isApproved
 
-          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">DISPATCHED</span>`
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">APPROVED · NOT SENT</span>`
 
           : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400">STAGED REVIEW</span>`;
 
         const actionBtn = isApproved
 
-          ? `<span class="text-xs text-gray-500 font-sans">Ready</span>`
+          ? `<span class="text-xs text-gray-500 font-sans">Manual export only</span>`
 
-          : `<button onclick="approveHarveyEmail('${item.id}', this)" class="px-2.5 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded text-[11px] font-bold font-sans transition">Approve & Send</button>`;
+          : `<button onclick="approveHarveyEmail('${item.id}', this)" class="px-2.5 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded text-[11px] font-bold font-sans transition">Approve for export</button>`;
 
         return `
 
@@ -2686,7 +2712,7 @@ async function runHarveyAutonomousCycle(btnEl) {
 
     const data = await res.json();
 
-    alert(`⚡ Harvey Autonomous Cycle Completed!\n\n• Candidates Scouted: ${data.candidates_scouted} buyers\n• Humanized Emails Staged: ${data.emails_staged}\n• Mode: ${data.mode.toUpperCase()}\n• Deliverability: 0% Bounce Waterfall Active`);
+    alert(`Harvey draft simulation completed.\n\n• Sample candidates: ${data.candidates_scouted}\n• Drafts created: ${data.emails_staged}\n• Email delivery: not connected; nothing was sent\n• Calendar: not connected; no meeting was booked`);
 
     loadHarveyStatus();
 

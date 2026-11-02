@@ -1,6 +1,9 @@
 import re
-import socket
 from typing import Dict, Any
+try:
+    import dns.resolver
+except ImportError:  # Keep the app available when optional DNS support is absent.
+    dns = None
 
 # Common disposable email provider domains
 DISPOSABLE_DOMAINS = {
@@ -27,7 +30,8 @@ EMAIL_REGEX = re.compile(
 class WaterfallEmailVerifier:
     """
     Multi-stage waterfall email deliverability verifier.
-    Prevents domain reputation damage and keeps bounce rates under 1.5%.
+    Checks syntax and domain MX routing. It cannot prove mailbox existence or
+    guarantee deliverability, so a routable domain is explicitly unverified.
     """
 
     @staticmethod
@@ -40,6 +44,7 @@ class WaterfallEmailVerifier:
             "is_free_provider": False,
             "is_role_account": False,
             "mx_found": False,
+            "mailbox_verified": False,
             "score": 0,
             "status": "DO_NOT_SEND",
             "reason": ""
@@ -52,6 +57,10 @@ class WaterfallEmailVerifier:
 
         checks["valid_syntax"] = True
         user_part, domain_part = email.split("@", 1)
+
+        if dns is None:
+            checks["reason"] = "DNS lookup support is unavailable; mailbox was not verified"
+            return checks
 
         # 2. Disposable Domain Check
         if domain_part in DISPOSABLE_DOMAINS:
@@ -70,13 +79,10 @@ class WaterfallEmailVerifier:
 
         # 5. MX Records Check with strict fast timeout
         try:
-            socket.setdefaulttimeout(1.0)
-            socket.gethostbyname(domain_part)
-            checks["mx_found"] = True
-        except Exception:
-            # When offline, sandboxed, or host resolution fails
-            if "." in domain_part and len(domain_part.split(".")[-1]) >= 2:
-                checks["mx_found"] = True
+            answers = dns.resolver.resolve(domain_part, "MX", lifetime=1.5)
+            checks["mx_found"] = bool(answers)
+        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.Timeout, dns.exception.DNSException):
+            checks["mx_found"] = False
 
         # Calculate Deliverability Score (0-100)
         score = 50
@@ -95,10 +101,14 @@ class WaterfallEmailVerifier:
 
         checks["score"] = min(max(score, 0), 100)
 
-        # Final Verdict
-        if checks["score"] >= 85:
-            checks["status"] = "SAFE_TO_SEND"
-            checks["reason"] = "Verified corporate mailbox with valid MX routing"
+        # A domain-level MX response does not establish that a mailbox exists.
+        if not checks["mx_found"]:
+            checks["score"] = min(checks["score"], 79)
+            checks["status"] = "DO_NOT_SEND"
+            checks["reason"] = "No MX record could be confirmed; mailbox was not verified"
+        elif checks["score"] >= 85:
+            checks["status"] = "MX_PRESENT_UNVERIFIED"
+            checks["reason"] = "Domain has an MX record; mailbox existence and deliverability were not verified"
         elif checks["score"] >= 65:
             checks["status"] = "ACCEPTABLE_RISKY"
             checks["reason"] = "Valid address, but free email provider or role-based prefix"

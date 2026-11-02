@@ -58,7 +58,7 @@
           </span>
           {% else %}
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
-            Customs Trade, Social Parser & Harvey Active
+            Sample mode • live data sources are not connected
           </span>
           {% endif %}
         </div>
@@ -105,6 +105,10 @@
   <!-- Main Content Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
 
+    <div class="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-100" role="status">
+      Prototype mode: bundled contacts and activity are examples. No live customs, social, Apollo, mailbox, or CRM provider is connected, and this app does not send email.
+    </div>
+
     <!-- ============================================== -->
     <!-- SLEEK MINIMAL TOP BAR                          -->
     <!-- ============================================== -->
@@ -113,7 +117,7 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="font-bold text-white tracking-tight">EximFlow Pro Engine</span>
         <span class="text-gray-500 hidden sm:inline">•</span>
-        <span class="text-gray-400 text-[11px] hidden sm:inline">99.3M Apollo Zero-Disk Stream & US Customs AMS Active</span>
+        <span class="text-gray-400 text-[11px] hidden sm:inline">Lead generation workspace</span>
       </div>
       <div class="flex items-center gap-2">
         <button onclick="openUserManualModal()" class="px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
@@ -135,6 +139,10 @@
     <!-- ============================================== -->
     <section id="tab-discovery" class="tab-section space-y-6">
 
+      <div class="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+        Sample records are illustrative and are not verified customs, Apollo, or social data. Connect a licensed source and independently verify contacts before outreach.
+      </div>
+
       <!-- Quick Autopilot Trigger Banner -->
       <div class="glass-panel rounded-xl p-3 border border-cyan-800/60 bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-gray-900 flex items-center justify-between gap-3 text-xs mb-4">
         <div class="flex items-center gap-2.5">
@@ -151,7 +159,7 @@
         <summary class="font-bold text-blue-300 flex items-center justify-between list-none">
           <span class="flex items-center gap-2">
             <span>💡</span>
-            <span>Quick Guide: Searching 99.3M Apollo Records & US Customs Bill of Lading Manifests</span>
+            <span>Quick Guide: Searching the available sample sources</span>
           </span>
           <span class="text-[10px] text-gray-400 group-open:rotate-180 transition-transform duration-200">▼</span>
         </summary>
@@ -191,7 +199,7 @@
             <select id="search-database" onchange="resetAndSearchLeads()" class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500">
               <option value="all">⚡ All Sources (Customs + Apollo + Startups + Instagram)</option>
               <option value="customs">🚢 US/EU Customs Bill of Lading (Exporters)</option>
-              <option value="apollo">📁 Apollo Database (99M Zero-Disk Stream)</option>
+              <option value="apollo" {% if not has_apollo_zip %}disabled{% endif %}>📁 Apollo Database ({% if has_apollo_zip %}Archive available{% else %}Unavailable on this deployment{% endif %})</option>
               <option value="social">📸 Instagram / parser.im (Wholesalers & Buyers)</option>
               <option value="startups">🚀 Tech Startups & SaaS Decision Makers</option>
             </select>
@@ -255,12 +263,12 @@
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
           <span id="pagination-status" class="font-semibold text-gray-200">Loaded 0 leads</span>
           <span class="text-gray-500">•</span>
-          <span class="text-emerald-400 font-bold">99,311,285+ Records in Active Stream</span>
+          <span class="text-gray-400">Only records available from connected sources are shown</span>
         </div>
         <div class="flex items-center gap-2">
           <button id="btn-load-more" onclick="loadMoreLeads()" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
             <svg class="w-4 h-4 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            <span id="btn-load-more-text">Stream Next Batch from 99M Database</span>
+            <span id="btn-load-more-text">Load more results</span>
           </button>
         </div>
       </div>
