@@ -1,3 +1,4 @@
+import urllib.parse
 import os
 
 from pathlib import Path
@@ -49,6 +50,65 @@ app = FastAPI(
     redirect_slashes=False
 
 )
+
+class VercelPathNormalizerMiddleware:
+    """
+    Pure ASGI middleware for Vercel Serverless Functions.
+    Accurately maps rewritten paths (via query parameter, Vercel headers, or scope)
+    to internal FastAPI API routes while routing root traffic to the UI dashboard.
+    """
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") == "http":
+            raw_path = scope.get("path", "")
+            raw_qs = scope.get("query_string", b"").decode("latin1", errors="ignore")
+
+            headers = {}
+            for k, v in scope.get("headers", []):
+                try:
+                    headers[k.decode("latin1").lower()] = v.decode("latin1")
+                except Exception:
+                    pass
+
+            target_path = None
+
+            # 1. Check for query param __api_path if injected by Vercel rewrite
+            if "__api_path=" in raw_qs:
+                qs_parts = urllib.parse.parse_qs(raw_qs, keep_blank_values=True)
+                if "__api_path" in qs_parts and qs_parts["__api_path"]:
+                    target_path = qs_parts["__api_path"][0]
+                    cleaned_qs = {k: v for k, v in qs_parts.items() if k != "__api_path"}
+                    scope["query_string"] = urllib.parse.urlencode(cleaned_qs, doseq=True).encode("latin1")
+
+            # 2. Check if raw_path is already a valid API or static route
+            if not target_path and raw_path.startswith(("/api/", "/static/")):
+                if raw_path not in ("/api/index", "/api/index.py", "/api/index/"):
+                    target_path = raw_path
+
+            # 3. Check Vercel proxy headers
+            if not target_path:
+                for h_name in ("x-matched-path", "x-invoke-path", "x-forwarded-uri", "x-original-url"):
+                    h_val = headers.get(h_name, "")
+                    if h_val:
+                        clean_h = h_val.split("?")[0]
+                        if clean_h.startswith(("/api/", "/static/")) and clean_h not in ("/api/index", "/api/index.py", "/api/index/"):
+                            target_path = clean_h
+                            break
+
+            # 4. Set resolved path or fallback to root UI
+            if target_path:
+                scope["path"] = target_path
+                scope["raw_path"] = target_path.encode("latin1")
+            elif raw_path in ("", "/", "/index", "/index.html", "/api/index", "/api/index.py", "/api/index/"):
+                scope["path"] = "/"
+                scope["raw_path"] = b"/"
+
+        await self.app(scope, receive, send)
+
+app.add_middleware(VercelPathNormalizerMiddleware)
+
 
 # Mount static files and templates
 
@@ -190,6 +250,28 @@ async def favicon():
 
     return Response(status_code=204)
 
+
+@app.get("/api/index.py")
+@app.get("/api/index")
+async def vercel_index_catchall(request: Request):
+    # Check if x-matched-path contains a known endpoint
+    matched = request.headers.get("x-matched-path") or request.headers.get("x-invoke-path")
+    if matched:
+        clean = matched.split("?")[0]
+        if clean == "/api/search":
+            # Extract query parameters
+            params = dict(request.query_params)
+            db = params.get("database", "all")
+            q = params.get("query", "")
+            prod = params.get("product", "")
+            cntry = params.get("country", "")
+            lim = int(params.get("limit", 50))
+            off = int(params.get("offset", 0))
+            return await search_leads(database=db, query=q, product=prod, country=cntry, limit=lim, offset=off)
+        elif clean.startswith("/api/") and clean not in ("/api/index", "/api/index.py"):
+            return RedirectResponse(url=matched, status_code=307)
+    return await home_page(request)
+
 @app.get("/", response_class=HTMLResponse)
 
 @app.get("/index.html", response_class=HTMLResponse)
@@ -256,7 +338,13 @@ async def custom_404_handler(request: Request, exc):
 
         status_code=404,
 
-        content={"detail": f"Route '{request.url.path}' not found. EximFlow AI dashboard is at '/'."}
+        content={
+            "detail": f"Route '{request.url.path}' not found. EximFlow AI dashboard is at '/'.",
+            "scope_path": request.scope.get("path"),
+            "scope_raw_path": request.scope.get("raw_path", b"").decode("latin1", errors="ignore"),
+            "scope_qs": request.scope.get("query_string", b"").decode("latin1", errors="ignore"),
+            "headers": dict(request.headers),
+        }
 
     )
 
