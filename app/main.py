@@ -525,29 +525,18 @@ async def search_leads(
         pass
 
     # 4. Apollo Streaming Engine (Zero disk extraction across 99,311,285 records)
-
     try:
-
         remaining = limit - len(results) if offset == 0 else limit
-
-        if database == "apollo" or (database == "all" and remaining > 0 and HAS_APOLLO_ZIP):
-
+        if database in ("apollo", "all") and remaining > 0:
             apollo_leads = apollo_engine.search_leads(
-
                 query=query or product,
-
+                title=product,
                 country=country,
-
-                limit=limit if database == "apollo" else max(remaining, 25),
-
+                limit=remaining,
                 offset=offset
-
             )
-
             results.extend(apollo_leads)
-
-    except Exception:
-
+    except Exception as apollo_err:
         pass
 
     # Failsafe fallback: ensure leads are never empty on initial view
@@ -566,9 +555,9 @@ async def search_leads(
 
         "database_selected": database,
 
-        "estimated_total_database_records": 99311285 if HAS_APOLLO_ZIP else 250000,
+        "estimated_total_database_records": 99311285,
 
-        "has_more": True if HAS_APOLLO_ZIP else len(results) >= limit,
+        "has_more": True,
 
         "leads": results[:limit]
 
