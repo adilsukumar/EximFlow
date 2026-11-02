@@ -6,7 +6,7 @@
     },
     {
       "source": "/static/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api/index.py?__api_path=/static/$1"
     },
     {
       "source": "/(.*)",

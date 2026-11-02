@@ -251,15 +251,55 @@ async def favicon():
     return Response(status_code=204)
 
 
+
+@app.get("/static/js/app.js")
+async def serve_app_js():
+    for candidate in [
+        static_dir / "js" / "app.js",
+        BASE_DIR / "app" / "static" / "js" / "app.js",
+        Path.cwd() / "app" / "static" / "js" / "app.js",
+    ]:
+        if candidate.exists() and candidate.is_file():
+            return Response(content=candidate.read_text(encoding="utf-8"), media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="app.js not found")
+
+@app.get("/static/css/style.css")
+async def serve_style_css():
+    for candidate in [
+        static_dir / "css" / "style.css",
+        BASE_DIR / "app" / "static" / "css" / "style.css",
+        Path.cwd() / "app" / "static" / "css" / "style.css",
+    ]:
+        if candidate.exists() and candidate.is_file():
+            return Response(content=candidate.read_text(encoding="utf-8"), media_type="text/css")
+    raise HTTPException(status_code=404, detail="style.css not found")
+
+@app.get("/static/{file_path:path}")
+async def serve_generic_static(file_path: str):
+    for candidate in [
+        static_dir / file_path,
+        BASE_DIR / "app" / "static" / file_path,
+        Path.cwd() / "app" / "static" / file_path,
+    ]:
+        if candidate.exists() and candidate.is_file():
+            mt = "application/javascript" if candidate.suffix == ".js" else ("text/css" if candidate.suffix == ".css" else None)
+            return Response(content=candidate.read_bytes(), media_type=mt)
+    raise HTTPException(status_code=404, detail=f"Static file '{file_path}' not found")
+
+
 @app.get("/api/index.py")
 @app.get("/api/index")
 async def vercel_index_catchall(request: Request):
-    # Check if x-matched-path contains a known endpoint
     matched = request.headers.get("x-matched-path") or request.headers.get("x-invoke-path")
     if matched:
         clean = matched.split("?")[0]
-        if clean == "/api/search":
-            # Extract query parameters
+        if clean == "/static/js/app.js":
+            return await serve_app_js()
+        elif clean == "/static/css/style.css":
+            return await serve_style_css()
+        elif clean.startswith("/static/"):
+            return await serve_generic_static(clean[len("/static/"):])
+        elif clean == "/api/search":
             params = dict(request.query_params)
             db = params.get("database", "all")
             q = params.get("query", "")
