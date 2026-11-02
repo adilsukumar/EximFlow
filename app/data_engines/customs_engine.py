@@ -359,6 +359,9 @@ class CustomsTradeEngine:
             }
         ]
 
+    def get_all_customs(self) -> List[Dict[str, Any]]:
+        return list(self._customs_records)
+
     def search_customs(
         self,
         query: str = "",

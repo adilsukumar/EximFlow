@@ -1,12 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index?path=/api/:path*"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py?__api_path=/api/$1"
+    },
+    {
+      "source": "/static/(.*)",
+      "destination": "/api/index.py"
     },
     {
       "source": "/(.*)",
-      "destination": "/api/index"
+      "destination": "/api/index.py"
     }
   ]
 }
